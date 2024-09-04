@@ -6,9 +6,10 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { FaCartPlus } from 'react-icons/fa';
 import { FaBars } from 'react-icons/fa';
 import { useState } from 'react';
+import { FaWindowClose } from 'react-icons/fa'; // Close window icon
 
 const NavBar = () => {
-    const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState<Boolean>(false);
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       <img src={assests.vogueLogo} alt="Logo" className="w-36 aspect-2/0.9" />
@@ -38,10 +39,16 @@ const NavBar = () => {
         <div className="group relative">
           <FontAwesomeIcon icon={faUser} className="w-5 cursor-pointer" />
           <div className="group-hover:block  absolute dropdown-menu right-0 pt-4 hidden">
-            <div className="flex flex-col gat-2 w-36 py-3 px-3 bg-slate-100 text-gray-500 rounded">
-              <p className="cursor-pointer hover:text-black">My Profile</p>
-              <p className="cursor-pointer hover:text-black">Orders</p>
-              <p className="cursor-pointer hover:text-black">Logout</p>
+            <div className="flex flex-col gat-2 w-44 py-3 px-3 bg-slate-100 text-gray-500 rounded">
+              <p className="cursor-pointer hover:text-black text-center border">
+                My Profile
+              </p>
+              <p className="cursor-pointer hover:text-black text-center border">
+                Orders
+              </p>
+              <p className="cursor-pointer hover:text-black text-center border">
+                Logout
+              </p>
             </div>
           </div>
         </div>
@@ -51,9 +58,54 @@ const NavBar = () => {
             0
           </p>
         </Link>
-        <FaBars onClick={()=> setVisible(true)} className='w-5 cursor-pointer sm:hidden'/>
+        <FaBars
+          onClick={() => setVisible(true)}
+          className="w-5 cursor-pointer sm:hidden"
+        />
       </div>
-      {/*  */}
+      {/*Sidebar menu for small Screen   */}
+      <div
+        className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${
+          visible ? 'w-full' : 'w-0'
+        }`}
+      >
+        <div className="flex flex-col text-gray-600">
+          <div
+            onClick={() => setVisible(false)}
+            className="flex items-center gap-4 p-3"
+          >
+            <FaWindowClose className="h-full rotate-180 hover:cursor-pointer text-black" />
+          </div>
+          <NavLink
+            onClick={() => setVisible(false)}
+            className="py-2 pl-6 border"
+            to={'/'}
+          >
+            HOME
+          </NavLink>
+          <NavLink
+            onClick={() => setVisible(false)}
+            className="py-2 pl-6 border"
+            to={'/collection'}
+          >
+            COLLECTION
+          </NavLink>
+          <NavLink
+            onClick={() => setVisible(false)}
+            className="py-2 pl-6 border"
+            to={'/about'}
+          >
+            ABOUT
+          </NavLink>
+          <NavLink
+            onClick={() => setVisible(false)}
+            className="py-2 pl-6 border"
+            to={'/contact'}
+          >
+            CONTACT
+          </NavLink>
+        </div>
+      </div>
     </div>
   );
 };
