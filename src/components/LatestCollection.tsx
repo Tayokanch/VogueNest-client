@@ -4,11 +4,12 @@ import productService from '../services/product.service';
 import Title from './Title';
 import { ProductI } from '../services/interface';
 import ProductItem from './ProductItem';
-
+import SkeletonLoader from './SkeletonLoader';
 const LatestCollection = () => {
   const context = useContext(ShopContext);
   const { products, setProducts, currency, delivery_fee } = context;
   const [latestProducts, setLatestProducts] = useState<ProductI[]>([]);
+  const numberOfSkeletons = 10;
 
   const FetchProducts = async () => {
     const { getAllProducts } = productService;
@@ -47,17 +48,22 @@ const LatestCollection = () => {
         </p>
       </div>
       {/* Rendering 10 Products */}
+
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-        {latestProducts &&
-          latestProducts.map((latestProduct, index) => (
-            <ProductItem
-              key={latestProduct._id}
-              id={latestProduct._id}
-              name={latestProduct.name}
-              image={latestProduct.image}
-              price={latestProduct.price}
-            />
-          ))}
+        {latestProducts.length === 0
+          ? 
+            Array.from({ length: numberOfSkeletons }, (_, index) => (
+              <SkeletonLoader key={index} />
+            ))
+          : latestProducts.map((latestProduct) => (
+              <ProductItem
+                key={latestProduct._id}
+                id={latestProduct._id}
+                name={latestProduct.name}
+                image={latestProduct.image}
+                price={latestProduct.price}
+              />
+            ))}
       </div>
     </div>
   );

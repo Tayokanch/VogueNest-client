@@ -8,7 +8,7 @@ interface ShopContextType {
     delivery_fee: number;
 }
 
-export const ShopContext = createContext<ShopContextType | null>(null);
+export const ShopContext = createContext<ShopContextType >();
 
 type Props = {
     children: ReactNode;
