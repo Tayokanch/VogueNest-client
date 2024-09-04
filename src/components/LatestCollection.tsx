@@ -41,18 +41,16 @@ const LatestCollection = () => {
       <div className="text-center py-8 text-3xl">
         <Title text1="LATEST" text2="COLLECTION" />
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-gray-600">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore,
-          fuga reprehenderit neque dolore eum provident laudantium illum maiores
-          atque repudiandae tempora et, quia perspiciatis eaque sint similique
-          explicabo! Hic, eligendi?
+          Step into the world of VogueNest, where fashion meets individuality.
+          Our latest collections are more than just clothes, they're an extension
+          of your personality, crafted to empower and inspire.
         </p>
       </div>
       {/* Rendering 10 Products */}
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
         {latestProducts.length === 0
-          ? 
-            Array.from({ length: numberOfSkeletons }, (_, index) => (
+          ? Array.from({ length: numberOfSkeletons }, (_, index) => (
               <SkeletonLoader key={index} />
             ))
           : latestProducts.map((latestProduct) => (
