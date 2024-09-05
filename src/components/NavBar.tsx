@@ -12,7 +12,9 @@ const NavBar = () => {
   const [visible, setVisible] = useState<Boolean>(false);
   return (
     <div className="flex items-center justify-between py-5 font-medium">
-      <img src={assests.vogueLogo} alt="Logo" className="w-36 aspect-2/0.9" />
+      <Link to={'/'}>
+        <img src={assests.vogueLogo} alt="Logo" className="w-36 aspect-2/0.9" />
+      </Link>
       <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
         <NavLink className="flex flex-col items-center gap-1" to={'/'}>
           <p>HOME</p>
