@@ -5,11 +5,13 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { FaCartPlus } from 'react-icons/fa';
 import { FaBars } from 'react-icons/fa';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { FaWindowClose } from 'react-icons/fa'; // Close window icon
+import { ShopContext } from '../context/ShopContext.tsx';
 
 const NavBar = () => {
   const [visible, setVisible] = useState<Boolean>(false);
+  const { setShowSearch } = useContext(ShopContext);
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       <Link to={'/'}>
@@ -37,7 +39,11 @@ const NavBar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-6">
-        <FontAwesomeIcon icon={faSearch} className="w-5 cursor-pointer" />
+        <FontAwesomeIcon
+          onClick={() => setShowSearch(true)}
+          icon={faSearch}
+          className="w-5 cursor-pointer"
+        />
         <div className="group relative">
           <FontAwesomeIcon icon={faUser} className="w-5 cursor-pointer" />
           <div className="group-hover:block  absolute dropdown-menu right-0 pt-4 hidden">
