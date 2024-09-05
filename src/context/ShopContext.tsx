@@ -50,10 +50,6 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  if (products) {
-    console.log('this is products', products);
-  }
-
   useEffect(() => {
     FetchProducts();
   }, []);

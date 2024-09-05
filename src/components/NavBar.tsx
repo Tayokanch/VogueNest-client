@@ -5,13 +5,24 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { FaCartPlus } from 'react-icons/fa';
 import { FaBars } from 'react-icons/fa';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FaWindowClose } from 'react-icons/fa'; // Close window icon
 import { ShopContext } from '../context/ShopContext.tsx';
-
+import { useLocation } from 'react-router-dom';
 const NavBar = () => {
   const [visible, setVisible] = useState<Boolean>(false);
   const { setShowSearch } = useContext(ShopContext);
+  const [searchIcon, setSearchIcon] = useState<Boolean>(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname !== '/collection') {
+      setSearchIcon(false);
+    } else {
+      setSearchIcon(true);
+    }
+  }, [location.pathname]);
+
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       <Link to={'/'}>
@@ -42,7 +53,7 @@ const NavBar = () => {
         <FontAwesomeIcon
           onClick={() => setShowSearch(true)}
           icon={faSearch}
-          className="w-5 cursor-pointer"
+          className={`w-5 cursor-pointer ${searchIcon ? 'block' : 'hidden'}`}
         />
         <div className="group relative">
           <FontAwesomeIcon icon={faUser} className="w-5 cursor-pointer" />
@@ -62,8 +73,9 @@ const NavBar = () => {
         </div>
         <Link to={'/cart'} className="relative">
           <FaCartPlus className="w-5 min-w-5" />
-          <p className="absolute right-[-10px] bottom-[-5px] w-4 text-center leading-4 bg-orange-600 text-black aspect-square rounded-full text-[8px] ">
+          <p className="absolute right-[-10px] bottom-[-5px] w-4 text-center leading-4 bg-orange-500 text-black aspect-square rounded-full text-[8px] ">
             0
+         
           </p>
         </Link>
         <FaBars
