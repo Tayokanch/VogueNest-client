@@ -21,7 +21,7 @@ interface SizeQuantities {
   [size: string]: number;
 }
 
-type CartItems = Record<string, SizeQuantities>;
+export type CartItems = Record<string, SizeQuantities>;
 
 export const ShopContext = createContext<ShopContextType>();
 

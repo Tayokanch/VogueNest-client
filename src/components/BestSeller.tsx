@@ -13,10 +13,6 @@ const BestSeller = () => {
     setBestSellers(bestProducts.slice(0, 5));
   }, [products]);
 
-  if (bestSellers) {
-    console.log('This is best sellers', bestSellers);
-  }
-
   return (
     <div className="my-10">
       <div className="text-center text-3xl py-8">

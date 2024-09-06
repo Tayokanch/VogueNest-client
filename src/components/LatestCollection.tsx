@@ -22,12 +22,8 @@ const LatestCollection = () => {
     }
   };
 
-  if (products) {
-    console.log('this is products', products);
-  }
-  if (latestProducts) {
-    console.log('this is latestProducts', latestProducts);
-  }
+
+
   useEffect(() => {
     FetchProducts();
   }, []);
