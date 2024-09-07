@@ -15,6 +15,7 @@ interface ShopContextType {
   addToCart: (productId: string, size: string) => Promise<void>;
   cartItems: CartItems;
   getCartCount: () => number;
+  updateQuantity: (productId: string, size: string, quantity: number)=> void
 }
 
 interface SizeQuantities {
@@ -73,6 +74,23 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
     return totalCount;
   };
 
+
+  const updateQuantity= async (productId: string, size: string, quantity: number)=>{
+      let cartData = structuredClone(cartItems);
+      cartData[productId][size]= quantity
+      setCartItems(cartData)
+  }
+
+  const getCartAmount = async ()=>{
+    let totalAmount = 0;
+    for(const item in cartItems){
+      let itemInfo = products.find((product)=> product._id === item);
+      for(const product in cartItems[item]){
+        
+      }
+    }
+  }
+
   const value = {
     products,
     setProducts,
@@ -85,6 +103,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
     addToCart,
     cartItems,
     getCartCount,
+    updateQuantity
   };
 
   const FetchProducts = async () => {
