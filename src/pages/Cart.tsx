@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import Title from '../components/Title';
 import { FaTrash } from 'react-icons/fa'; 
+import CartTotal from '../components/CartTotal';
 
 
 interface CartProductsI {
@@ -9,10 +10,21 @@ interface CartProductsI {
   size: string;
   quantity: number;
 }
+
+interface OrderedProducts{
+  currency: string;
+  name: string;
+  image: string[];
+  price: number;
+  size: string;
+  quantity: number;
+}
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity } = useContext(ShopContext);
+  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
 
   const [cartProducts, setCartProducts] = useState<CartProductsI[]>([]);
+  const [order, setOrder] = useState<OrderedProducts[]>([])
+
   useEffect(() => {
     const tempProducts = [];
     for (const items in cartItems) {
@@ -29,6 +41,34 @@ const Cart = () => {
     console.log(tempProducts);
     setCartProducts(tempProducts);
   }, [cartItems]);
+
+
+  useEffect(() => {
+    const newOrder: OrderedProducts[] = cartProducts.map((cartProduct) => {
+      const product = products?.find((p) => p._id === cartProduct._id);
+      if (product) {
+        return {
+          name: product.name,
+          image: product.image,
+          size: cartProduct.size,
+          currency: '£',
+          
+          quantity: cartProduct.quantity,
+          price: product.price,
+          productId: product._id
+        };
+      }
+      return null;
+    }).filter(Boolean) as OrderedProducts[];
+  
+    setOrder(newOrder); 
+  }, [cartProducts, products]);
+  
+
+
+  useEffect(()=>{
+    console.log(order)
+  },[order])
   return (
     <div className="border-t pt-14">
       <div className="text-2xl mb-3">
@@ -39,7 +79,6 @@ const Cart = () => {
         {cartProducts &&
           cartProducts.map((cartProduct, index) => {
             const product = products?.find((p) => p._id === cartProduct._id);
-            const size =product?.sizes.find((size)=> size === cartProduct.size)
 return (
   <div key={index} className='py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4'>
     <div className='flex items-start gap-6 '>
@@ -48,16 +87,25 @@ return (
         <p className='text-xs sm:text-lg font-medium'>{product?.name}</p>
         <div className='flex items-center gap-5 mt-2'>
           <p>{currency}{product?.price}</p>
-          <p className='px-2 sm-px-3 sm:py-1 border bg-slate-50'>{size}</p>
+          <p className='px-2 sm-px-3 sm:py-1 border bg-slate-50'>{cartProduct.size}</p>
         </div>
       </div>
     </div>
-    <input  onChange={(e)=>e.target.value === '' || e.target.validationMessage === '0' ? null : updateQuantity(product?._id, size, Number(e.target.value) )} className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1' type="number" min={1} defaultValue={cartProduct.quantity}/>
-    <FaTrash onClick={()=>updateQuantity(product?._id, size, 0)} className='w-4 mr-4 sm:w-5 cursor-pointer'/>
+    <input  onChange={(e)=>e.target.value === '' || e.target.validationMessage === '0' ? null : updateQuantity(product?._id, cartProduct.size, Number(e.target.value) )} className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1' type="number" min={1} defaultValue={cartProduct.quantity}/>
+    <FaTrash onClick={()=>updateQuantity(product?._id, cartProduct.size, 0)} className='w-4 mr-4 sm:w-5 cursor-pointer'/>
   </div>
 )
             
           })}
+      </div>
+      <div className='flex justify-end my-20'>
+        <div className='w-full sm:w-[450px]'>
+          <CartTotal/>
+          <div className='w-full text-end'>
+            <button onClick={()=> navigate('/place-order')} className='bg-black text-white text-sm my-8 px-8 py-3'>PROCEED TO CHECKOUT</button>
+          </div>
+        </div>
+
       </div>
     </div>
   );

@@ -2,6 +2,8 @@ import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import { ProductI } from '../services/interface';
 import productService from '../services/product.service';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { NavigateFunction } from 'react-router-dom';
 
 interface ShopContextType {
   products: ProductI[];
@@ -15,7 +17,9 @@ interface ShopContextType {
   addToCart: (productId: string, size: string) => Promise<void>;
   cartItems: CartItems;
   getCartCount: () => number;
-  updateQuantity: (productId: string, size: string, quantity: number)=> void
+  updateQuantity: (productId: string, size: string, quantity: number) => void;
+  getCartAmount: () => number;
+  navigate: NavigateFunction;
 }
 
 interface SizeQuantities {
@@ -35,6 +39,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   const [search, setSearch] = useState<string>('');
   const [showSearch, setShowSearch] = useState<Boolean>(false);
   const [cartItems, setCartItems] = useState<CartItems>({});
+  const navigate = useNavigate()
 
   const currency: string = '£';
   const delivery_fee: number = 10;
@@ -74,22 +79,35 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
     return totalCount;
   };
 
+  const updateQuantity = async (
+    productId: string,
+    size: string,
+    quantity: number
+  ) => {
+    let cartData = structuredClone(cartItems);
+    cartData[productId][size] = quantity;
+    setCartItems(cartData);
+  };
 
-  const updateQuantity= async (productId: string, size: string, quantity: number)=>{
-      let cartData = structuredClone(cartItems);
-      cartData[productId][size]= quantity
-      setCartItems(cartData)
-  }
-
-  const getCartAmount = async ()=>{
+  const getCartAmount =  () => {
     let totalAmount = 0;
-    for(const item in cartItems){
-      let itemInfo = products.find((product)=> product._id === item);
-      for(const product in cartItems[item]){
-        
+    for (const itemId in cartItems) {
+      let itemInfo = products.find((product) => product._id === itemId);
+      for (const sizeQuantity in cartItems[itemId]) {
+        try {
+          if (cartItems[itemId][sizeQuantity] > 0) {
+            totalAmount += itemInfo?.price * cartItems[itemId][sizeQuantity];
+          }
+        } catch (err) {
+          console.log(err);
+        }
       }
     }
-  }
+    return totalAmount;
+  };
+
+
+
 
   const value = {
     products,
@@ -103,7 +121,9 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
     addToCart,
     cartItems,
     getCartCount,
-    updateQuantity
+    updateQuantity,
+    getCartAmount,
+    navigate
   };
 
   const FetchProducts = async () => {
@@ -122,7 +142,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log(cartItems);
+    console.log(cartItems, 'This is CartItems');
   }, [cartItems]);
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
