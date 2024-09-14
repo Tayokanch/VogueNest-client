@@ -46,48 +46,90 @@ const Orders = () => {
       </div>
 
       <div>
-        {
-          myOrder?.map((item) => (
-            item.orders.map((order) => {
-              const product = products.find((prod) => prod._id === order.productId);
-              if (product) {
-                return (
-                  <div
-                    key={product._id}
-                    className="py-4 border-t border-b text-gray-700 flex flex-col md:flex-row md:items-center justify-between gap-6"
-                  >
-                    <div className="flex items-start gap-6 text-sm">
-                      <img src={product.image[0]} alt="" className="w-16 sm:w-20" />
+        {myOrder?.map((item) =>
+          item.orders.map((order) => {
+            const product = products.find(
+              (prod) => prod._id === order.productId
+            );
+            if (product) {
+              return (
+                <div
+                  key={product._id}
+                  className="py-4 border-t border-b text-gray-700 flex flex-col md:flex-row md:items-center justify-between gap-6"
+                >
+                  <div className="flex items-start gap-6 text-sm">
+                    <img
+                      src={product.image[0]}
+                      alt=""
+                      className="w-16 sm:w-20"
+                    />
 
-                      <div>
-                        <p className="sm:text-base font-medium">{product.name}</p>
-                        <div className="flex items-center gap-3 mt-2 text-base text-gray-700">
-                          <p className="text-lg">
-                            {currency}
-                            {product.price}
-                          </p>
-                          <p>{`Quantity: ${order.quantity}`}</p>
-                          <p>{`Size: ${order.size}`}</p>
-                        </div>
-                        <p className="mt-2">
-                          Date: <span className="text-gray-400"> 25, sep, 2024</span>
+                    <div>
+                      <p className="sm:text-base font-medium">{product.name}</p>
+                      <div className="flex items-center gap-3 mt-2 text-base text-gray-700">
+                        <p className="text-lg">
+                          {currency}
+                          {product.price}
                         </p>
+                        <p>{`Quantity: ${order.quantity}`}</p>
+                        <p>{`Size: ${order.size}`}</p>
                       </div>
-                    </div>
-                    <div className='md:w-1/2 flex justify-between'>
-                      <div className='flex items-center gap-2'>
-                        <p className='min-w-2 h-2 rounded-full bg-orange-500'></p>
-                        <p className='text-sm md:text-base'>Ready to ship</p>
-                      </div>
-                      <button className='border px-4 py-2 text-sm font-medium round-full'>Track Order</button>
+                      <p className="mt-2">
+                        Date:{' '}
+                        <span className="text-gray-400"> 25, sep, 2024</span>
+                      </p>
                     </div>
                   </div>
-                );
-              }
-              return null; 
-            })
-          ))
-        }
+                  <div className="md:w-1/2 flex justify-between">
+                    <div className="flex items-center gap-2">
+                      <p className="min-w-2 h-2 rounded-full bg-orange-500"></p>
+                      <p className="text-sm md:text-base">Ready to ship</p>
+                    </div>
+                    <button className="border px-4 py-2 text-sm font-medium round-full">
+                      Track Order
+                    </button>
+                  </div>
+                </div>
+              );
+            } else {
+              // Skeleton UI for unavailable products
+              return (
+                <div
+                  key={order.productId}
+                  className="py-4 border-t border-b text-gray-700 flex flex-col md:flex-row md:items-center justify-between gap-6 animate-pulse"
+                >
+                  <div className="flex items-start gap-6 text-sm">
+                    <div className="w-16 sm:w-20 bg-gray-300 rounded"></div>{' '}
+                    <div>
+                      <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>{' '}
+                      <div className="flex items-center gap-3 mt-2 text-base text-gray-700">
+                        <div className="h-6 bg-gray-300 rounded w-20"></div>{' '}
+                        <div className="h-4 bg-gray-300 rounded w-16"></div>{' '}
+                        <div className="h-4 bg-gray-300 rounded w-16"></div>{' '}
+                      </div>
+                      <div className="mt-2">
+                        <div className="h-4 bg-gray-300 rounded w-1/4"></div>{' '}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="md:w-1/2 flex justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="min-w-2 h-2 rounded-full bg-gray-300"></div>
+                      <div className="h-4 bg-gray-300 rounded w-1/4"></div>{' '}
+                      {/* Placeholder for status */}
+                    </div>
+                    <button
+                      className="border px-4 py-2 text-sm font-medium round-full bg-gray-300 cursor-not-allowed"
+                      disabled
+                    >
+                      Track Order
+                    </button>
+                  </div>
+                </div>
+              );
+            }
+          })
+        )}
       </div>
     </div>
   );
