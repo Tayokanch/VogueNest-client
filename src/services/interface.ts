@@ -24,3 +24,7 @@ export interface FormData {
   password: string;
   email: string
 }
+
+export interface LoginData extends Omit< FormData,'name'>{
+  [x: string]: SetStateAction<Boolean>;
+};

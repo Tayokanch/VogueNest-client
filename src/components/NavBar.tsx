@@ -11,7 +11,7 @@ import { ShopContext } from '../context/ShopContext.tsx';
 import { useLocation } from 'react-router-dom';
 const NavBar = () => {
   const [visible, setVisible] = useState<Boolean>(false);
-  const { setShowSearch, getCartCount } = useContext(ShopContext);
+  const { setShowSearch, getCartCount, loginStatus } = useContext(ShopContext);
   const [searchIcon, setSearchIcon] = useState<Boolean>(false);
   const location = useLocation();
 
@@ -56,20 +56,30 @@ const NavBar = () => {
           className={`w-5 cursor-pointer ${searchIcon ? 'block' : 'hidden'}`}
         />
         <div className="group relative">
-          <Link to={'/login'}>
-            <FontAwesomeIcon icon={faUser} className="w-5 cursor-pointer" />
-          </Link>
+          <FontAwesomeIcon icon={faUser} className="w-5 cursor-pointer" />
+
           <div className="group-hover:block  absolute dropdown-menu right-0 pt-4 hidden">
             <div className="flex flex-col gat-2 w-44 py-3 px-3 bg-slate-100 text-gray-500 rounded">
-              <p className="cursor-pointer hover:text-black text-center border">
-                My Profile
-              </p>
-              <p className="cursor-pointer hover:text-black text-center border">
-                Orders
-              </p>
-              <p className="cursor-pointer hover:text-black text-center border">
-                Logout
-              </p>
+              {loginStatus === true ? (
+                <div>
+                  <p className="cursor-pointer hover:text-black text-center border">
+                    My Profile
+                  </p>
+                  <p className="cursor-pointer hover:text-black text-center border">
+                    Orders
+                  </p>
+                  <p className="cursor-pointer hover:text-black text-center border">
+                    Logout
+                  </p>
+                </div>
+              ) : (
+                <Link
+                  className="cursor-pointer hover:text-black text-center border"
+                  to={'/login'}
+                >
+                  Login
+                </Link>
+              )}
             </div>
           </div>
         </div>

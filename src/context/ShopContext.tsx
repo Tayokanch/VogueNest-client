@@ -4,6 +4,7 @@ import productService from '../services/product.service';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { NavigateFunction } from 'react-router-dom';
+import VogueNestService from '../services/api-client';
 
 interface ShopContextType {
   products: ProductI[];
@@ -20,14 +21,16 @@ interface ShopContextType {
   updateQuantity: (productId: string, size: string, quantity: number) => void;
   getCartAmount: () => number;
   navigate: NavigateFunction;
+  loginStatus: boolean;
+  setLoginStatus: React.Dispatch<React.SetStateAction<Boolean>>;
 }
 
 interface SizeQuantities {
   [size: string]: number;
 }
 
-export type CartItems = Record<string, SizeQuantities>;
 
+export type CartItems = Record<string, SizeQuantities>;
 export const ShopContext = createContext<ShopContextType>();
 
 type Props = {
@@ -39,7 +42,9 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   const [search, setSearch] = useState<string>('');
   const [showSearch, setShowSearch] = useState<Boolean>(false);
   const [cartItems, setCartItems] = useState<CartItems>({});
-  const navigate = useNavigate()
+  const [loginStatus, setLoginStatus] = useState<Boolean>(false);
+
+  const navigate = useNavigate();
 
   const currency: string = '£';
   const delivery_fee: number = 10;
@@ -89,7 +94,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
     setCartItems(cartData);
   };
 
-  const getCartAmount =  () => {
+  const getCartAmount = () => {
     let totalAmount = 0;
     for (const itemId in cartItems) {
       let itemInfo = products.find((product) => product._id === itemId);
@@ -106,9 +111,6 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
     return totalAmount;
   };
 
-
-
-
   const value = {
     products,
     setProducts,
@@ -123,7 +125,9 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
     getCartCount,
     updateQuantity,
     getCartAmount,
-    navigate
+    navigate,
+    loginStatus,
+    setLoginStatus,
   };
 
   const FetchProducts = async () => {
@@ -143,7 +147,27 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     console.log(cartItems, 'This is CartItems');
-  }, [cartItems]);
+    console.log(loginStatus, 'This is loginStatus');
+  }, [cartItems, loginStatus]);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const res = await VogueNestService.validateCookie();
+        if (res) {
+          setLoginStatus(true);
+        } else {
+          setLoginStatus(false);
+        }
+      } catch (error) {
+        console.log(error);
+        setLoginStatus(false);
+        navigate('/login');
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
 };
