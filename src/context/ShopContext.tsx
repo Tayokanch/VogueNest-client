@@ -3,6 +3,7 @@ import { ProductI } from '../services/interface';
 import productService from '../services/product.service';
 import { toast } from 'react-toastify';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
+import VogueNestService from '../services/api-client'
 
 interface ShopContextType {
   products: ProductI[];
@@ -61,6 +62,16 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     FetchProducts();
   }, []);
+
+  useEffect(()=>{
+    const validateCookie = async ()=>{
+      const response: any = await VogueNestService.validateCookie()
+      console.log(response)
+      setLoginStatus(response.data)
+    }
+
+    validateCookie()
+  },[])
 
   // Load cart items from localStorage
   useEffect(() => {

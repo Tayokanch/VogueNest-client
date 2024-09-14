@@ -18,11 +18,23 @@ class VogueNestService {
     return response.data;
   }
 
-  async validateCookie(){
-    const response = await this.http.post('/cookie-validator', {}, {
-      withCredentials:true
+  async validateCookie() {
+    const response = await this.http.post(
+      '/cookie-validator',
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  }
+
+  async getUserOrder() {
+    const order = await this.http.get('/orders', {
+      withCredentials: true,
     });
-    return response.data
+
+    return order.data;
   }
 }
 

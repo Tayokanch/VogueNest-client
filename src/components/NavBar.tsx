@@ -6,12 +6,12 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { FaCartPlus } from 'react-icons/fa';
 import { FaBars } from 'react-icons/fa';
 import { useContext, useEffect, useState } from 'react';
-import { FaWindowClose } from 'react-icons/fa'; // Close window icon
+import { FaWindowClose } from 'react-icons/fa'; 
 import { ShopContext } from '../context/ShopContext.tsx';
 import { useLocation } from 'react-router-dom';
 const NavBar = () => {
   const [visible, setVisible] = useState<Boolean>(false);
-  const { setShowSearch, getCartCount, loginStatus } = useContext(ShopContext);
+  const { setShowSearch, getCartCount, loginStatus, navigate } = useContext(ShopContext);
   const [searchIcon, setSearchIcon] = useState<Boolean>(false);
   const location = useLocation();
 
@@ -65,7 +65,7 @@ const NavBar = () => {
                   <p className="cursor-pointer hover:text-black text-center border">
                     My Profile
                   </p>
-                  <p className="cursor-pointer hover:text-black text-center border">
+                  <p  onClick={()=> navigate('/orders')} className="cursor-pointer hover:text-black text-center border">
                     Orders
                   </p>
                   <p className="cursor-pointer hover:text-black text-center border">

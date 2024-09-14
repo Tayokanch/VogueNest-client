@@ -25,6 +25,5 @@ export interface FormData {
   email: string
 }
 
-export interface LoginData extends Omit< FormData,'name'>{
-  [x: string]: SetStateAction<Boolean>;
-};
+export interface LoginData extends Omit<FormData, 'name'> {};
+
