@@ -18,3 +18,9 @@ export interface ProductItemI {
   name: string;
   price: number;
 }
+
+export interface FormData {
+  name: string;
+  password: string;
+  email: string
+}

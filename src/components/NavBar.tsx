@@ -11,7 +11,7 @@ import { ShopContext } from '../context/ShopContext.tsx';
 import { useLocation } from 'react-router-dom';
 const NavBar = () => {
   const [visible, setVisible] = useState<Boolean>(false);
-  const { setShowSearch,getCartCount } = useContext(ShopContext);
+  const { setShowSearch, getCartCount } = useContext(ShopContext);
   const [searchIcon, setSearchIcon] = useState<Boolean>(false);
   const location = useLocation();
 
@@ -56,7 +56,9 @@ const NavBar = () => {
           className={`w-5 cursor-pointer ${searchIcon ? 'block' : 'hidden'}`}
         />
         <div className="group relative">
-          <FontAwesomeIcon icon={faUser} className="w-5 cursor-pointer" />
+          <Link to={'/login'}>
+            <FontAwesomeIcon icon={faUser} className="w-5 cursor-pointer" />
+          </Link>
           <div className="group-hover:block  absolute dropdown-menu right-0 pt-4 hidden">
             <div className="flex flex-col gat-2 w-44 py-3 px-3 bg-slate-100 text-gray-500 rounded">
               <p className="cursor-pointer hover:text-black text-center border">
@@ -75,7 +77,6 @@ const NavBar = () => {
           <FaCartPlus className="w-5 min-w-5" />
           <p className="absolute right-[-10px] bottom-[-5px] w-4 text-center leading-4 bg-orange-500 text-black aspect-square rounded-full text-[8px] ">
             {getCartCount()}
-         
           </p>
         </Link>
         <FaBars
