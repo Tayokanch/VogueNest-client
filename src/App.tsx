@@ -14,6 +14,8 @@ import SearchBar from './components/SearchBar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Signup from './pages/Signup';
+import Success from './components/payment/success';
+import Cancel from './components/payment/Cancel';
 const App = () => {
   return (
     <div className="px-4 sm:px[5vw] md:px-[7vw] lg:px- [9vw] bg-AliceBlue min-h-screen	">
@@ -31,6 +33,8 @@ const App = () => {
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
       </Routes>
       <Footer />
     </div>

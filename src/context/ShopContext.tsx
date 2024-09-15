@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
-import { ProductI } from '../services/interface';
+import { OrderedProducts, ProductI } from '../services/interface';
 import productService from '../services/product.service';
 import { toast } from 'react-toastify';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
@@ -23,6 +23,11 @@ interface ShopContextType {
   navigate: NavigateFunction;
   loginStatus: boolean;
   setLoginStatus: React.Dispatch<React.SetStateAction<boolean>>;
+  order: OrderedProducts[]
+  setOrder: React.Dispatch<React.SetStateAction<OrderedProducts[]>>; 
+  loading: Boolean
+  setLoading: React.Dispatch<React.SetStateAction<Boolean>>; 
+
 }
 
 interface SizeQuantities {
@@ -42,6 +47,9 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<CartItems>({});
   const [loginStatus, setLoginStatus] = useState<boolean>(false);
+  const [order, setOrder] = useState<OrderedProducts[]>([]);
+  const [loading, setLoading] = useState<Boolean>(false);
+
 
   const navigate = useNavigate();
 
@@ -180,6 +188,10 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
         navigate,
         loginStatus,
         setLoginStatus,
+        order,
+        setOrder,
+        loading, 
+        setLoading
       }}
     >
       {children}

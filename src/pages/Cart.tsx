@@ -10,21 +10,13 @@ interface CartProductsI {
   quantity: number;
 }
 
-interface OrderedProducts {
-  currency: string;
-  name: string;
-  image: string[];
-  price: number;
-  size: string;
-  quantity: number;
-}
+
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, deleteItem, navigate } =
+  const { products, currency, cartItems, updateQuantity, deleteItem, navigate, order, setOrder } =
     useContext(ShopContext);
 
   const [cartProducts, setCartProducts] = useState<CartProductsI[]>([]);
-  const [order, setOrder] = useState<OrderedProducts[]>([]);
 
   useEffect(() => {
     const tempProducts: CartProductsI[] = [];

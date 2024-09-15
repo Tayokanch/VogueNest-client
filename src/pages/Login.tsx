@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { useNavigate } from 'react-router-dom';
+import LoadingBar from '../components/LoadingBar';
 const Login = () => {
   const {
     register,
@@ -14,35 +15,36 @@ const Login = () => {
   } = useForm<LoginData>({
     mode: 'onChange',
   });
-  const { loginStatus, setLoginStatus } = useContext(ShopContext);
+  const { loginStatus, setLoginStatus, loading, setLoading } =
+    useContext(ShopContext);
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const navigate = useNavigate();
-
+  console.log(loading, 'this is loading');
   const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
   const onSubmit = async (data: LoginData) => {
     setServerError(null);
     setSuccessMessage(null);
     try {
+      setLoading(true);
       const res = await VogueNestService.Login(data);
       if (res.login) {
         setLoginStatus(true);
         setSuccessMessage('Login successful!');
+        setLoading(false);
         navigate('/');
       } else {
         setServerError('Login failed.');
       }
     } catch (error: any) {
+      setLoading(false);
       setServerError(
         error?.response?.data?.message || 'Sign up failed. Please try again.'
       );
     }
   };
 
-  useEffect(() => {
-    console.log('This is login status', loginStatus);
-  }, [loginStatus]);
 
   return (
     <form
@@ -94,7 +96,7 @@ const Login = () => {
         className="bg-black text-white font-light px-8 py-2 mt-4"
         disabled={isSubmitting}
       >
-        {isSubmitting ? 'Logging in...' : 'Login'}
+        {loading ? <LoadingBar /> : 'Login'}
       </button>
     </form>
   );

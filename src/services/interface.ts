@@ -22,8 +22,15 @@ export interface ProductItemI {
 export interface FormData {
   name: string;
   password: string;
-  email: string
+  email: string;
+}
+export interface OrderedProducts {
+  currency: string;
+  name: string;
+  image: string[];
+  price: number;
+  size: string;
+  quantity: number;
 }
 
-export interface LoginData extends Omit<FormData, 'name'> {};
-
+export interface LoginData extends Omit<FormData, 'name'> {}

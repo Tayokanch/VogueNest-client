@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
 import { FormData } from '../services/interface';
 import VogueNestService from '../services/api-client';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import LoadingBar from '../components/LoadingBar';
+import { ShopContext } from '../context/ShopContext';
 
 const Signup = () => {
   const {
@@ -14,16 +16,20 @@ const Signup = () => {
   });
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
+  const { loading, setLoading, navigate } = useContext(ShopContext);
   const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
   const onSubmit = async (data: FormData) => {
     setServerError(null);
     setSuccessMessage(null);
     try {
+      setLoading(true);
       await VogueNestService.createUser(data);
       setSuccessMessage('Sign up successful! ');
+      setLoading(false);
+      navigate('/login');
     } catch (error: any) {
+      setLoading(false);
       setServerError(
         error?.response?.data?.message || 'Sign up failed. Please try again.'
       );
@@ -88,7 +94,7 @@ const Signup = () => {
         className="bg-black text-white font-light px-8 py-2 mt-4"
         disabled={isSubmitting}
       >
-        {isSubmitting ? 'Signing Up...' : 'Sign Up'}
+        {loading ? <LoadingBar /> : 'Sign up'}
       </button>
     </form>
   );
