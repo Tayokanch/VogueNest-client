@@ -12,6 +12,8 @@ interface ShopContextType {
   delivery_fee: number;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  loginUSer: string
+  setLoginUser: React.Dispatch<React.SetStateAction<string>>;
   showSearch: boolean;
   setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
   addToCart: (productId: string, size: string) => Promise<void>;
@@ -49,6 +51,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   const [loginStatus, setLoginStatus] = useState<boolean>(false);
   const [order, setOrder] = useState<OrderedProducts[]>([]);
   const [loading, setLoading] = useState<Boolean>(false);
+  const [loginUSer, setLoginUser] = useState<string>('');
 
 
   const navigate = useNavigate();
@@ -76,6 +79,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
       const response: any = await VogueNestService.validateCookie()
       console.log(response)
       setLoginStatus(response.data)
+      setLoginUser(response.role)
     }
 
     validateCookie()
@@ -191,7 +195,9 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
         order,
         setOrder,
         loading, 
-        setLoading
+        setLoading,
+        loginUSer,
+         setLoginUser
       }}
     >
       {children}

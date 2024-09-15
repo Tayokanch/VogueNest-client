@@ -15,7 +15,7 @@ const Login = () => {
   } = useForm<LoginData>({
     mode: 'onChange',
   });
-  const { loginStatus, setLoginStatus, loading, setLoading } =
+  const { loginStatus, setLoginStatus, loading, setLoading, setLoginUser } =
     useContext(ShopContext);
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -29,8 +29,10 @@ const Login = () => {
     try {
       setLoading(true);
       const res = await VogueNestService.Login(data);
+      console.log(res)
       if (res.login) {
         setLoginStatus(true);
+        setLoginUser(res.role)
         setSuccessMessage('Login successful!');
         setLoading(false);
         navigate('/');
