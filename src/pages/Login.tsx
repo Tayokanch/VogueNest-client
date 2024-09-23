@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
-import { LoginData } from '../services/interface';
+import { LoggedUserI, LoginData } from '../services/interface';
 import VogueNestService from '../services/api-client';
 import { useEffect, useState } from 'react';
 import { useContext } from 'react';
@@ -28,11 +28,11 @@ const Login = () => {
     setSuccessMessage(null);
     try {
       setLoading(true);
-      const res = await VogueNestService.Login(data);
+      const res: LoggedUserI   = await VogueNestService.Login(data);
       console.log(res)
       if (res.login) {
         setLoginStatus(true);
-        setLoginUser(res.role)
+        setLoginUser(res)
         setSuccessMessage('Login successful!');
         setLoading(false);
         navigate('/');

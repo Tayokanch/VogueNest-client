@@ -11,6 +11,11 @@ export interface ProductI {
   date: number;
   __v: number;
 }
+export interface CartProductsI {
+  _id: string;
+  size: string;
+  quantity: number;
+}
 
 export interface ProductItemI {
   id: string;
@@ -31,6 +36,11 @@ export interface OrderedProducts {
   price: number;
   size: string;
   quantity: number;
+  productId: string;
 }
-
+export interface LoggedUserI {
+  login: Boolean;
+  role: String;
+  id: String;
+}
 export interface LoginData extends Omit<FormData, 'name'> {}

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FormData, LoginData } from './interface';
+import { FormData, LoggedUserI, LoginData } from './interface';
 
 class VogueNestService {
   http = axios.create({
@@ -12,7 +12,7 @@ class VogueNestService {
   }
 
   async Login(data: LoginData) {
-    const response = await this.http.post<LoginData>('/login', data, {
+    const response = await this.http.post<LoggedUserI>('/login', data, {
       withCredentials: true,
     });
     return response.data;

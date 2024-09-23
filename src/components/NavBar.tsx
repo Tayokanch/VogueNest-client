@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from 'react';
 import { FaWindowClose } from 'react-icons/fa';
 import { ShopContext } from '../context/ShopContext.tsx';
 import { useLocation } from 'react-router-dom';
+
 const NavBar = () => {
   const [visible, setVisible] = useState<Boolean>(false);
   const { setShowSearch, getCartCount, loginStatus, navigate, loginUSer } =
@@ -62,7 +63,7 @@ const NavBar = () => {
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-800 hidden" />
         </NavLink>
 
-        {loginUSer && loginUSer === 'vogueadmin' && (
+        {loginUSer && loginUSer?.role === 'vogueadmin' && (
           <NavLink
             className="border px-5 py-1 rounded-full text-base inline-block text-center font-bold hover:bg-gray-200"
             to={'/admin'}
@@ -114,7 +115,7 @@ const NavBar = () => {
 
         {/* Cart Icon */}
 
-        { loginUSer === 'user' && (
+        {loginUSer?.role === 'admin' ? null : (
           <Link to={'/cart'} className="relative">
             <FaCartPlus className="w-5 min-w-5" />
             <p className="absolute right-[-10px] bottom-[-5px] w-4 text-center leading-4 bg-orange-500 text-black aspect-square rounded-full text-[8px] ">

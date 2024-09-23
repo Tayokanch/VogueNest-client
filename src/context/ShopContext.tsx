@@ -1,9 +1,15 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
-import { OrderedProducts, ProductI } from '../services/interface';
+import {
+  CartProductsI,
+  LoggedUserI,
+  OrderedProducts,
+  ProductI,
+} from '../services/interface';
 import productService from '../services/product.service';
 import { toast } from 'react-toastify';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import VogueNestService from '../services/api-client'
+import VogueNestService from '../services/api-client';
+import axios from 'axios';
 
 interface ShopContextType {
   products: ProductI[];
@@ -12,8 +18,8 @@ interface ShopContextType {
   delivery_fee: number;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-  loginUSer: string
-  setLoginUser: React.Dispatch<React.SetStateAction<string>>;
+  loginUSer: LoggedUserI;
+  setLoginUser: React.Dispatch<React.SetStateAction<LoggedUserI>>;
   showSearch: boolean;
   setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
   addToCart: (productId: string, size: string) => Promise<void>;
@@ -25,11 +31,12 @@ interface ShopContextType {
   navigate: NavigateFunction;
   loginStatus: boolean;
   setLoginStatus: React.Dispatch<React.SetStateAction<boolean>>;
-  order: OrderedProducts[]
-  setOrder: React.Dispatch<React.SetStateAction<OrderedProducts[]>>; 
-  loading: Boolean
-  setLoading: React.Dispatch<React.SetStateAction<Boolean>>; 
-
+  order: OrderedProducts[];
+  setOrder: React.Dispatch<React.SetStateAction<OrderedProducts[]>>;
+  loading: Boolean;
+  setLoading: React.Dispatch<React.SetStateAction<Boolean>>;
+  cartProducts: CartProductsI[];
+  setCartProducts: React.Dispatch<React.SetStateAction<CartProductsI[]>>;
 }
 
 interface SizeQuantities {
@@ -51,8 +58,8 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   const [loginStatus, setLoginStatus] = useState<boolean>(false);
   const [order, setOrder] = useState<OrderedProducts[]>([]);
   const [loading, setLoading] = useState<Boolean>(false);
-  const [loginUSer, setLoginUser] = useState<string>('');
-
+  const [loginUSer, setLoginUser] = useState<LoggedUserI>({});
+  const [cartProducts, setCartProducts] = useState<CartProductsI[]>([]);
 
   const navigate = useNavigate();
 
@@ -74,16 +81,16 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
     FetchProducts();
   }, []);
 
-  useEffect(()=>{
-    const validateCookie = async ()=>{
-      const response: any = await VogueNestService.validateCookie()
-      console.log(response)
-      setLoginStatus(response.data)
-      setLoginUser(response.role)
-    }
+  useEffect(() => {
+    const validateCookie = async () => {
+      const response: any = await VogueNestService.validateCookie();
+      console.log(response);
+      setLoginStatus(response.login);
+      setLoginUser(response);
+    };
 
-    validateCookie()
-  },[])
+    validateCookie();
+  }, []);
 
   // Load cart items from localStorage
   useEffect(() => {
@@ -169,7 +176,43 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
         }
       }
     }
-    return totalAmount ;
+    return totalAmount;
+  };
+  useEffect(() => {
+    const getCustomerOrders = localStorage.getItem('orders');
+    if (getCustomerOrders) {
+      setOrder(JSON.parse(getCustomerOrders));
+    }
+  }, [cartProducts, products]);
+
+  useEffect(() => {
+    console.log('This is the user orders', order);
+  }, [order]);
+
+
+ useEffect(() => {
+    console.log('This is the user logging User details', loginUSer);
+  }, [loginUSer]);
+
+  const postOrderToDB = async () => {
+    try {
+      const res = await axios.post(
+        'http://localhost:8050/api/voguenest/send-orders',
+        {
+          customerId: loginUSer?.id,
+          orders: order.map((item) => ({
+            size: item.size,
+            quantity: item.quantity,
+            price: item.price,
+            productId: item.productId,
+          })),
+        }
+      );
+
+      console.log(res.data);
+    } catch (error) {
+      console.error('Error posting orders:', error);
+    }
   };
 
   return (
@@ -194,10 +237,12 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
         setLoginStatus,
         order,
         setOrder,
-        loading, 
+        loading,
         setLoading,
         loginUSer,
-         setLoginUser
+        setLoginUser,
+        cartProducts,
+        setCartProducts,
       }}
     >
       {children}

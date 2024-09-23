@@ -3,20 +3,23 @@ import { ShopContext } from '../context/ShopContext';
 import Title from '../components/Title';
 import { FaTrash } from 'react-icons/fa';
 import CartTotal from '../components/CartTotal';
-
-interface CartProductsI {
-  _id: string;
-  size: string;
-  quantity: number;
-}
-
-
+import { CartProductsI, OrderedProducts } from '../services/interface';
+import { toast } from 'react-toastify';
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, deleteItem, navigate, order, setOrder } =
-    useContext(ShopContext);
-
-  const [cartProducts, setCartProducts] = useState<CartProductsI[]>([]);
+  const {
+    products,
+    currency,
+    cartItems,
+    updateQuantity,
+    deleteItem,
+    navigate,
+    order,
+    setOrder,
+    loginUSer,
+    cartProducts,
+    setCartProducts,
+  } = useContext(ShopContext);
 
   useEffect(() => {
     const tempProducts: CartProductsI[] = [];
@@ -60,9 +63,25 @@ const Cart = () => {
     }
   }, [cartProducts, products]);
 
+  const handleCheckout = () => {
+    if (order.length === 0) {
+      toast('Your Cart is empty');
+    }
+    else if(loginUSer) {
+      navigate('/place-order');
+    } else {
+      toast('Kindly login to checkout');
+      navigate('/login');
+    }
+  };
+
   useEffect(() => {
     console.log(order);
   }, [order]);
+
+  useEffect(() => {
+    console.log('This is LoggedIn User', loginUSer);
+  }, []);
 
   return (
     <div className="border-t pt-14">
@@ -79,11 +98,7 @@ const Cart = () => {
               className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4"
             >
               <div className="flex items-start gap-6">
-                <img
-                  src={product?.image[0]}
-                  alt=""
-                  className="w-16 sm:w-20"
-                />
+                <img src={product?.image[0]} alt="" className="w-16 sm:w-20" />
                 <div>
                   <p className="text-xs sm:text-lg font-medium">
                     {product?.name}
@@ -104,7 +119,7 @@ const Cart = () => {
                   e.target.value === '' || e.target.validationMessage === '0'
                     ? null
                     : updateQuantity(
-                        product?._id,
+                        product?._id!,
                         cartProduct.size,
                         Number(e.target.value)
                       )
@@ -116,7 +131,7 @@ const Cart = () => {
               />
               <FaTrash
                 onClick={() => {
-                  deleteItem(product?._id, cartProduct.size); // Call deleteItem to ensure state updates
+                  deleteItem(product?._id!, cartProduct.size); // Call deleteItem to ensure state updates
                 }}
                 className="w-4 mr-4 sm:w-5 cursor-pointer"
               />
@@ -129,7 +144,7 @@ const Cart = () => {
           <CartTotal />
           <div className="w-full text-end">
             <button
-              onClick={() => navigate('/place-order')}
+              onClick={handleCheckout}
               className="bg-black text-white text-sm my-8 px-8 py-3"
             >
               PROCEED TO CHECKOUT
