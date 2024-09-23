@@ -8,7 +8,7 @@ import LoadingBar from '../components/LoadingBar';
 import { toast } from 'react-toastify';
 const PlaceOrder = () => {
   const [method, setMethod] = useState<string>('');
-  const { order, navigate, loading, setLoading, loginUSer } =
+  const { order, navigate, loading, setLoading, loginUSer, postOrderToDB } =
     useContext(ShopContext);
   const [displayToast, setDisplayToast] = useState<Boolean>(false);
 
@@ -61,6 +61,23 @@ const PlaceOrder = () => {
       }
     } catch (error) {
       console.error('Error during payment process:', error);
+    }
+  };
+
+  const handleOrderAndPayment = async () => {
+    try {
+      const order = await postOrderToDB();
+      console.log(order);
+      if (order) {
+        await makePayment().then(() => {
+          localStorage.removeItem('orders');
+          localStorage.removeItem('cartItems');
+        });
+      }
+
+      return;
+    } catch (error) {
+      console.error('Error in the order and payment process:', error);
     }
   };
 
@@ -159,7 +176,7 @@ const PlaceOrder = () => {
               <LoadingBar />
             ) : (
               <button
-                onClick={makePayment}
+                onClick={handleOrderAndPayment}
                 className="bg-black text-white  px-16 py-3 text-sm cursor-pointer hover:bg-slate-600"
               >
                 PLACE ORDER

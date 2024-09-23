@@ -37,6 +37,7 @@ interface ShopContextType {
   setLoading: React.Dispatch<React.SetStateAction<Boolean>>;
   cartProducts: CartProductsI[];
   setCartProducts: React.Dispatch<React.SetStateAction<CartProductsI[]>>;
+  postOrderToDB: () => {};
 }
 
 interface SizeQuantities {
@@ -189,8 +190,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
     console.log('This is the user orders', order);
   }, [order]);
 
-
- useEffect(() => {
+  useEffect(() => {
     console.log('This is the user logging User details', loginUSer);
   }, [loginUSer]);
 
@@ -199,19 +199,23 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
       const res = await axios.post(
         'http://localhost:8050/api/voguenest/send-orders',
         {
-          customerId: loginUSer?.id,
           orders: order.map((item) => ({
             size: item.size,
             quantity: item.quantity,
-            price: item.price,
             productId: item.productId,
           })),
+        },
+        {
+          withCredentials: true,
         }
       );
-
-      console.log(res.data);
+      console.log('Response from server:', res.data);
+      return true;
     } catch (error) {
-      console.error('Error posting orders:', error);
+      console.error(
+        'Error posting order to DB:',
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -243,6 +247,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
         setLoginUser,
         cartProducts,
         setCartProducts,
+        postOrderToDB,
       }}
     >
       {children}
