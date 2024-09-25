@@ -13,6 +13,8 @@ const PlaceOrder = () => {
   const [displayToast, setDisplayToast] = useState<Boolean>(false);
 
   const makePayment = async () => {
+    localStorage.removeItem('orders');
+    localStorage.removeItem('cartItems');
     const stripe = await loadStripe(
       'pk_test_51Pwfos01Lv2goK4hMf9Uvu0YddgMCJO04qKvF63x5nv4p1HJFxvDeaAnmaGO0JT9vUo8aHOAO0uDalTHfkWVd00Z00fBfOel83'
     );
@@ -67,12 +69,8 @@ const PlaceOrder = () => {
   const handleOrderAndPayment = async () => {
     try {
       const order = await postOrderToDB();
-      console.log(order);
       if (order) {
-        await makePayment().then(() => {
-          localStorage.removeItem('orders');
-          localStorage.removeItem('cartItems');
-        });
+        await makePayment().then(() => {});
       }
 
       return;
