@@ -84,10 +84,17 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     const validateCookie = async () => {
-      const response: any = await VogueNestService.validateCookie();
-      console.log(response);
-      setLoginStatus(response.login);
-      setLoginUser(response);
+      try {
+        const response: any = await VogueNestService.validateCookie();
+        if (!response.ok) {
+          navigate('/login');
+          return;
+        }
+        setLoginStatus(response.login);
+        setLoginUser(response);
+      } catch (err) {
+        console.error(err);
+      }
     };
 
     validateCookie();
@@ -185,14 +192,6 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
       setOrder(JSON.parse(getCustomerOrders));
     }
   }, [cartProducts, products]);
-
-  useEffect(() => {
-    console.log('This is the user orders', order);
-  }, [order]);
-
-  useEffect(() => {
-    console.log('This is the user logging User details', loginUSer);
-  }, [loginUSer]);
 
   const postOrderToDB = async () => {
     try {

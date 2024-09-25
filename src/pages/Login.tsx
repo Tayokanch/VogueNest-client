@@ -29,7 +29,6 @@ const Login = () => {
     try {
       setLoading(true);
       const res: LoggedUserI   = await VogueNestService.Login(data);
-      console.log(res)
       if (res.login) {
         setLoginStatus(true);
         setLoginUser(res)

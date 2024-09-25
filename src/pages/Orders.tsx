@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import Title from '../components/Title';
 import VogueNestService from '../services/api-client';
+import moment from 'moment';
 
 interface ProductOrder {
   productId: string;
@@ -52,6 +53,9 @@ const Orders = () => {
               (prod) => prod._id === order.productId
             );
             if (product) {
+              const formattedDate = moment(item.createdAt).format(
+                'DD MMM YYYY'
+              );
               return (
                 <div
                   key={product._id}
@@ -75,8 +79,8 @@ const Orders = () => {
                         <p>{`Size: ${order.size}`}</p>
                       </div>
                       <p className="mt-2">
-                        Date:{' '}
-                        <span className="text-gray-400"> 25, sep, 2024</span>
+                        Date:
+                        <span className="text-gray-400">{formattedDate}</span>
                       </p>
                     </div>
                   </div>
@@ -92,7 +96,6 @@ const Orders = () => {
                 </div>
               );
             } else {
-              // Skeleton UI for unavailable products
               return (
                 <div
                   key={order.productId}
@@ -116,7 +119,6 @@ const Orders = () => {
                     <div className="flex items-center gap-2">
                       <div className="min-w-2 h-2 rounded-full bg-gray-300"></div>
                       <div className="h-4 bg-gray-300 rounded w-1/4"></div>{' '}
-                      {/* Placeholder for status */}
                     </div>
                     <button
                       className="border px-4 py-2 text-sm font-medium round-full bg-gray-300 cursor-not-allowed"

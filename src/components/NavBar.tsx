@@ -9,11 +9,19 @@ import { useContext, useEffect, useState } from 'react';
 import { FaWindowClose } from 'react-icons/fa';
 import { ShopContext } from '../context/ShopContext.tsx';
 import { useLocation } from 'react-router-dom';
+import VogueNestService from '../services/api-client.ts';
+import { toast } from 'react-toastify';
 
 const NavBar = () => {
   const [visible, setVisible] = useState<Boolean>(false);
-  const { setShowSearch, getCartCount, loginStatus, navigate, loginUSer } =
-    useContext(ShopContext);
+  const {
+    setShowSearch,
+    getCartCount,
+    loginStatus,
+    navigate,
+    loginUSer,
+    setLoginStatus,
+  } = useContext(ShopContext);
   const [searchIcon, setSearchIcon] = useState<Boolean>(false);
   const location = useLocation();
 
@@ -25,6 +33,14 @@ const NavBar = () => {
     }
   }, [location.pathname]);
 
+  const signOut = async () => {
+    const response: any = await VogueNestService.logOut();
+    if (response) {
+      setLoginStatus(false);
+      toast(response);
+      navigate('/');
+    }
+  };
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       {/* Logo */}
@@ -97,7 +113,10 @@ const NavBar = () => {
                   >
                     Orders
                   </p>
-                  <p className="cursor-pointer hover:text-black text-center border">
+                  <p
+                    onClick={signOut}
+                    className="cursor-pointer hover:text-black text-center border"
+                  >
                     Logout
                   </p>
                 </div>

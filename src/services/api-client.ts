@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { FormData, LoggedUserI, LoginData } from './interface';
 
+interface logoutResponseI{
+  message: string
+}
 class VogueNestService {
   http = axios.create({
     baseURL: 'http://localhost:8050/api/voguenest',
@@ -36,6 +39,17 @@ class VogueNestService {
 
     return order.data;
   }
+  async logOut():Promise<string> {
+   const res = await this.http.post<logoutResponseI>(
+      '/sign-out',
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    return res.data.message
+  }
+
 }
 
 export default new VogueNestService();
