@@ -11,12 +11,11 @@ import Orders from './pages/Orders';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import SearchBar from './components/SearchBar';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Signup from './pages/Signup';
-
-import Success from '../src/components/payment/Success.tsx'
-import Cancel from '../src/components/payment/Cancel.tsx'
+import Cancel from './components/payment/Cancel';
+import Success from './components/payment/Success';
 
 const App = () => {
   return (
