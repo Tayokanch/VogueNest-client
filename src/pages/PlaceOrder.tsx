@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import Title from '../components/Title';
 import CartTotal from '../components/CartTotal';
 import striplogo from '../assets/stripe.png';
@@ -32,7 +32,7 @@ const PlaceOrder = () => {
 
     try {
       const response = await fetch(
-        'http://localhost:8050/api/payment/create-checkout-session',
+        'https://voguenest-server.onrender.com/api/payment/create-checkout-session',
         {
           method: 'POST',
           headers: headers,

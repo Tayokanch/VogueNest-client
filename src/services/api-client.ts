@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { FormData, LoggedUserI, LoginData, Order } from './interface';
 
-interface logoutResponseI{
-  message: string
+interface logoutResponseI {
+  message: string;
 }
 class VogueNestService {
   http = axios.create({
-    baseURL: 'http://localhost:8050/api/voguenest',
+    baseURL: 'https://voguenest-server.onrender.com/api/voguenest',
   });
 
   async createUser(data: FormData) {
@@ -39,17 +39,16 @@ class VogueNestService {
 
     return order.data;
   }
-  async logOut():Promise<string> {
-   const res = await this.http.post<logoutResponseI>(
+  async logOut(): Promise<string> {
+    const res = await this.http.post<logoutResponseI>(
       '/sign-out',
       {},
       {
         withCredentials: true,
       }
     );
-    return res.data.message
+    return res.data.message;
   }
-
 }
 
 export default new VogueNestService();

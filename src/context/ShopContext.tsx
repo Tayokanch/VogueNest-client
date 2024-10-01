@@ -12,8 +12,8 @@ import productService from '../services/product.service';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import VogueNestService from '../services/api-client';
-import axios from 'axios';
-import { AxiosError } from 'axios';
+
+import axios, { AxiosError } from 'axios';
 
 export const ShopContext = createContext<ShopContextType>(defaultShopContext);
 
@@ -170,8 +170,8 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   const postOrderToDB = async (): Promise<boolean> => {
     setLoading(true);
     try {
-      const res = await axios.post(
-        'http://localhost:8050/api/voguenest/send-orders',
+       await axios.post(
+        'https://voguenest-server.onrender.com/api/voguenest/send-orders',
         {
           orders: order.map((item) => ({
             size: item.size,
