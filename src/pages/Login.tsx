@@ -20,7 +20,7 @@ const Login = () => {
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const navigate = useNavigate();
-  console.log(loading, 'this is loading');
+ 
   const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
   const onSubmit = async (data: LoginData) => {
