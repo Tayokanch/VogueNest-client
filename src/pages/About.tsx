@@ -1,7 +1,5 @@
-import React from 'react';
 import Title from '../components/Title';
 import about1 from '../assets/vogueAbout.webp';
-import about2 from '../assets/vogueaAbout2.webp';
 import NewsLetter from '../components/NewsLetter';
 const About = () => {
   return (

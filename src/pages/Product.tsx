@@ -7,7 +7,7 @@ import dullstar from '../assets/dullstar.png';
 import RelatedProducts from '../components/RelatedProducts';
 
 const Product = () => {
-  const { products, currency, addToCart, cartItems } = useContext(ShopContext);
+  const { products, currency, addToCart } = useContext(ShopContext);
   const { productId } = useParams();
   const [selectSize, setSelectSize] = useState('');
   const [productData, setProductData] = useState<ProductI>();

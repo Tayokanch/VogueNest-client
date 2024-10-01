@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FieldValues, useForm } from 'react-hook-form';
+import {  useForm } from 'react-hook-form';
 import { FormData } from '../services/interface';
 import VogueNestService from '../services/api-client';
 import { useContext, useState } from 'react';
@@ -10,7 +10,7 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({
     mode: 'onChange',
   });

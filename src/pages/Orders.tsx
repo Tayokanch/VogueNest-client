@@ -1,24 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import Title from '../components/Title';
 import VogueNestService from '../services/api-client';
 import moment from 'moment';
-
-interface ProductOrder {
-  productId: string;
-  size: string;
-  quantity: number;
-  _id: string;
-}
-
-interface Order {
-  _id: string;
-  customerId: string;
-  orders: ProductOrder[];
-  deliveryStatus: string;
-  createdAt: string;
-  __v: number;
-}
+import { Order } from '../services/interface';
 
 const Orders = () => {
   const { products, currency } = useContext(ShopContext);

@@ -1,51 +1,20 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import {
+  CartItems,
   CartProductsI,
+  defaultShopContext,
   LoggedUserI,
   OrderedProducts,
   ProductI,
+  ShopContextType,
 } from '../services/interface';
 import productService from '../services/product.service';
 import { toast } from 'react-toastify';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import VogueNestService from '../services/api-client';
 import axios from 'axios';
 
-interface ShopContextType {
-  products: ProductI[];
-  setProducts: React.Dispatch<React.SetStateAction<ProductI[]>>;
-  currency: string;
-  delivery_fee: number;
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  loginUSer: LoggedUserI;
-  setLoginUser: React.Dispatch<React.SetStateAction<LoggedUserI>>;
-  showSearch: boolean;
-  setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
-  addToCart: (productId: string, size: string) => Promise<void>;
-  cartItems: CartItems;
-  getCartCount: () => number;
-  updateQuantity: (productId: string, size: string, quantity: number) => void;
-  deleteItem: (productId: string, size: string) => void; // Method to delete items
-  getCartAmount: () => number;
-  navigate: NavigateFunction;
-  loginStatus: boolean;
-  setLoginStatus: React.Dispatch<React.SetStateAction<boolean>>;
-  order: OrderedProducts[];
-  setOrder: React.Dispatch<React.SetStateAction<OrderedProducts[]>>;
-  loading: Boolean;
-  setLoading: React.Dispatch<React.SetStateAction<Boolean>>;
-  cartProducts: CartProductsI[];
-  setCartProducts: React.Dispatch<React.SetStateAction<CartProductsI[]>>;
-  postOrderToDB: () => {};
-}
-
-interface SizeQuantities {
-  [size: string]: number;
-}
-
-export type CartItems = Record<string, SizeQuantities>;
-export const ShopContext = createContext<ShopContextType>();
+export const ShopContext = createContext<ShopContextType>(defaultShopContext);
 
 type Props = {
   children: ReactNode;
@@ -59,7 +28,11 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   const [loginStatus, setLoginStatus] = useState<boolean>(false);
   const [order, setOrder] = useState<OrderedProducts[]>([]);
   const [loading, setLoading] = useState<Boolean>(false);
-  const [loginUSer, setLoginUser] = useState<LoggedUserI>({});
+  const [loginUSer, setLoginUser] = useState<LoggedUserI>({
+    login: false,
+    role: '',
+    id: '',
+  });
   const [cartProducts, setCartProducts] = useState<CartProductsI[]>([]);
 
   const navigate = useNavigate();
@@ -72,7 +45,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
 
     try {
       const res = await getAllProducts();
-      setProducts(res.data.products);
+      setProducts(res.data.products as ProductI[]);
     } catch (err) {
       console.error(err);
     }
@@ -211,10 +184,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
       console.log('Response from server:', res.data);
       return true;
     } catch (error) {
-      console.error(
-        'Error posting order to DB:',
-        error.response?.data || error.message
-      );
+      console.error('Error posting order to DB:', error);
     }
   };
 

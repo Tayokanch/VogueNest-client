@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FormData, LoggedUserI, LoginData } from './interface';
+import { FormData, LoggedUserI, LoginData, Order } from './interface';
 
 interface logoutResponseI{
   message: string
@@ -33,7 +33,7 @@ class VogueNestService {
   }
 
   async getUserOrder() {
-    const order = await this.http.get('/orders', {
+    const order = await this.http.get<Order[]>('/orders', {
       withCredentials: true,
     });
 

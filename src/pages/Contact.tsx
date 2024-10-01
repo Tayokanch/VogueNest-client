@@ -1,4 +1,3 @@
-import React from 'react';
 import Title from '../components/Title';
 import contactUs from '../assets/contactUs.webp';
 import NewsLetter from '../components/NewsLetter';

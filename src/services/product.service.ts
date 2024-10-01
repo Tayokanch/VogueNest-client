@@ -3,7 +3,7 @@ import { ProductI } from "./interface.ts";
 
 class ProductService {
   getAllProducts() {
-    return axios.get<ProductI[]>('https://api.foreverbuy.in/api/product/list');
+    return axios.get<{ success: boolean; products: ProductI[] }>('https://api.foreverbuy.in/api/product/list');
   }
 }
 

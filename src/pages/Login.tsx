@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { FieldValues, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { LoggedUserI, LoginData } from '../services/interface';
 import VogueNestService from '../services/api-client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useContext } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { useNavigate } from 'react-router-dom';
@@ -11,16 +11,16 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<LoginData>({
     mode: 'onChange',
   });
-  const { loginStatus, setLoginStatus, loading, setLoading, setLoginUser } =
+  const { setLoginStatus, loading, setLoading, setLoginUser } =
     useContext(ShopContext);
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const navigate = useNavigate();
- 
+
   const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
   const onSubmit = async (data: LoginData) => {
@@ -28,10 +28,10 @@ const Login = () => {
     setSuccessMessage(null);
     try {
       setLoading(true);
-      const res: LoggedUserI   = await VogueNestService.Login(data);
+      const res: LoggedUserI = await VogueNestService.Login(data);
       if (res.login) {
         setLoginStatus(true);
-        setLoginUser(res)
+        setLoginUser(res);
         setSuccessMessage('Login successful!');
         setLoading(false);
         navigate('/');
@@ -45,7 +45,6 @@ const Login = () => {
       );
     }
   };
-
 
   return (
     <form

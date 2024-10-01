@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Title from '../components/Title';
 import CartTotal from '../components/CartTotal';
 import striplogo from '../assets/stripe.png';
@@ -10,7 +10,6 @@ const PlaceOrder = () => {
   const [method, setMethod] = useState<string>('');
   const { order, navigate, loading, setLoading, loginUSer, postOrderToDB } =
     useContext(ShopContext);
-  const [displayToast, setDisplayToast] = useState<Boolean>(false);
 
   const makePayment = async () => {
     localStorage.removeItem('orders');
