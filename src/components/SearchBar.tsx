@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { FaTimes } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
 import { useLocation } from 'react-router-dom';
 

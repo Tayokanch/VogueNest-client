@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { ProductItemI } from '../services/interface';
 import { ShopContext } from '../context/ShopContext';
 import { Link } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import productService from '../services/product.service';
 import Title from './Title';
@@ -7,7 +7,7 @@ import ProductItem from './ProductItem';
 import SkeletonLoader from './SkeletonLoader';
 const LatestCollection = () => {
   const context = useContext(ShopContext);
-  const { products, setProducts, currency, delivery_fee } = context;
+  const { products, setProducts } = context;
   const [latestProducts, setLatestProducts] = useState<ProductI[]>([]);
   const numberOfSkeletons = 10;
 
@@ -21,8 +21,6 @@ const LatestCollection = () => {
       console.error(err);
     }
   };
-
-
 
   useEffect(() => {
     FetchProducts();
@@ -38,8 +36,8 @@ const LatestCollection = () => {
         <Title text1="LATEST" text2="COLLECTION" />
         <p className="w-/4 m-auto text-xs sm:text-sm md:text-gray-600">
           Step into the world of VogueNest, where fashion meets individuality.
-          Our latest collections are more than just clothes, they're an extension
-          of your personality, crafted to empower and inspire.
+          Our latest collections are more than just clothes, they're an
+          extension of your personality, crafted to empower and inspire.
         </p>
       </div>
       {/* Rendering 10 Products */}
