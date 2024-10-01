@@ -6,9 +6,11 @@ import { ShopContext } from '../context/ShopContext';
 import { loadStripe } from '@stripe/stripe-js';
 import LoadingBar from '../components/LoadingBar';
 import { toast } from 'react-toastify';
+
+
 const PlaceOrder = () => {
   const [method, setMethod] = useState<string>('');
-  const { order, navigate, loading, setLoading, loginUSer, postOrderToDB } =
+  const { order, navigate, loading, setLoading, postOrderToDB } =
     useContext(ShopContext);
 
   const makePayment = async () => {
@@ -78,13 +80,6 @@ const PlaceOrder = () => {
     }
   };
 
-  useEffect(() => {
-    console.log('This is LoggedIn User', loginUSer);
-  }, []);
-
-  useEffect(() => {
-    console.log('This is order', order);
-  }, []);
   return (
     <div className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
       <div className="flex flex-col gap-4 w-full sm:max-w-[480px]">

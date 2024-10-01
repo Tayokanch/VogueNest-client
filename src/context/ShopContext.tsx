@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import VogueNestService from '../services/api-client';
 import axios from 'axios';
+import { AxiosError } from 'axios';
 
 export const ShopContext = createContext<ShopContextType>(defaultShopContext);
 
@@ -166,7 +167,8 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
     }
   }, [cartProducts, products]);
 
-  const postOrderToDB = async () => {
+  const postOrderToDB = async (): Promise<boolean> => {
+    setLoading(true);
     try {
       const res = await axios.post(
         'http://localhost:8050/api/voguenest/send-orders',
@@ -181,10 +183,23 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
           withCredentials: true,
         }
       );
-      console.log('Response from server:', res.data);
+
       return true;
     } catch (error) {
-      console.error('Error posting order to DB:', error);
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        const statusCode = axiosError.response.status;
+        const errorMessage =
+          axiosError.response.data.message || axiosError.response.data.error;
+        console.error('Error posting order to DB:', {
+          status: statusCode,
+          message: errorMessage,
+        });
+        toast(errorMessage);
+        navigate('/login');
+      }
+      setLoading(false);
+      return false;
     }
   };
 

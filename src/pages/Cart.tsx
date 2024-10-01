@@ -75,14 +75,6 @@ const Cart = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(order);
-  }, [order]);
-
-  useEffect(() => {
-    console.log('This is LoggedIn User', loginUSer);
-  }, []);
-
   return (
     <div className="border-t pt-14">
       <div className="text-2xl mb-3">
