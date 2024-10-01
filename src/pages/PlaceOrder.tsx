@@ -7,7 +7,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import LoadingBar from '../components/LoadingBar';
 import { toast } from 'react-toastify';
 
-
 const PlaceOrder = () => {
   const [method, setMethod] = useState<string>('');
   const { order, navigate, loading, setLoading, postOrderToDB } =
@@ -32,7 +31,7 @@ const PlaceOrder = () => {
 
     try {
       const response = await fetch(
-        'https://voguenest-server.onrender.com/api/payment/create-checkout-session',
+        'http://localhost:8050/api/payment/create-checkout-session',
         {
           method: 'POST',
           headers: headers,

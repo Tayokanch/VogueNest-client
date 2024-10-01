@@ -170,8 +170,8 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   const postOrderToDB = async (): Promise<boolean> => {
     setLoading(true);
     try {
-       await axios.post(
-        'https://voguenest-server.onrender.com/api/voguenest/send-orders',
+      await axios.post(
+        'http://localhost:8050/api/voguenest/send-orders',
         {
           orders: order.map((item) => ({
             size: item.size,
@@ -185,19 +185,24 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
       );
 
       return true;
-    } catch (error) {
+    } catch (error: any) {
       const axiosError = error as AxiosError;
-      if (axiosError.response) {
+
+      if (axiosError.response && axiosError.response.data) {
         const statusCode = axiosError.response.status;
-        const errorMessage =
-          axiosError.response.data.message || axiosError.response.data.error;
+        const errorMessage: { message: string } = axiosError.response.data as {
+          message: string;
+        };
+
         console.error('Error posting order to DB:', {
           status: statusCode,
-          message: errorMessage,
+          message: errorMessage.message, 
         });
-        toast(errorMessage);
+
+        toast(errorMessage.message);
         navigate('/login');
       }
+
       setLoading(false);
       return false;
     }

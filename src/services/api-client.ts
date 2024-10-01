@@ -4,6 +4,7 @@ import { FormData, LoggedUserI, LoginData, Order } from './interface';
 interface logoutResponseI{
   message: string
 }
+
 class VogueNestService {
   http = axios.create({
     baseURL: 'http://localhost:8050/api/voguenest',
