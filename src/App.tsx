@@ -14,8 +14,10 @@ import SearchBar from './components/SearchBar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Signup from './pages/Signup';
-import Success from './components/payment/success';
-import Cancel from './components/payment/Cancel';
+
+import Success from '../src/components/payment/Success.tsx'
+import Cancel from '../src/components/payment/Cancel.tsx'
+
 const App = () => {
   return (
     <div className="px-4 sm:px[5vw] md:px-[7vw] lg:px- [9vw] bg-AliceBlue min-h-screen	">
