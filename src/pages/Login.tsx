@@ -39,10 +39,16 @@ const Login = () => {
         setServerError('Login failed.');
       }
     } catch (error: any) {
-      setLoading(false);
-      setServerError(
-        error?.response?.data?.message || 'Sign up failed. Please try again.'
-      );
+      if (error.message === 'Network Error' || error.response?.status === 0) {
+        setServerError('The server is currently down. Please try again later.');
+      } else {
+        setServerError(
+          error?.response?.data?.error || 'Login failed. Please try again.'
+        );
+      }
+  
+      console.log("This is error", error);
+    
     }
   };
 

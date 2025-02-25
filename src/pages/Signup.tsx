@@ -30,9 +30,13 @@ const Signup = () => {
       navigate('/login');
     } catch (error: any) {
       setLoading(false);
-      setServerError(
-        error?.response?.data?.message || 'Sign up failed. Please try again.'
-      );
+      if (error.message === 'Network Error' || error.response?.status === 0) {
+        setServerError('The server is currently down. Please try again later.');
+      } else {
+        setServerError(
+          error?.response?.data?.error || 'Signup failed. Please try again.'
+        );
+      }
     }
   };
 
