@@ -16,9 +16,13 @@ class VogueNestService {
   }
 
   async Login(data: LoginData) {
+      console.log("I am in login")
     const response = await this.http.post<LoggedUserI>('/login', data, {
       withCredentials: true,
     });
+    
+    console.log("this is response:", response)
+  
     return response.data;
   }
 

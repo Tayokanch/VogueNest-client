@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { useNavigate } from 'react-router-dom';
 import LoadingBar from '../components/LoadingBar';
+
 const Login = () => {
   const {
     register,
@@ -15,6 +16,7 @@ const Login = () => {
   } = useForm<LoginData>({
     mode: 'onChange',
   });
+
   const { setLoginStatus, loading, setLoading, setLoginUser } =
     useContext(ShopContext);
   const [serverError, setServerError] = useState<string | null>(null);
