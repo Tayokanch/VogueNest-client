@@ -1,12 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { LoggedUserI, LoginData } from '../services/interface';
-import VogueNestService from '../services/api-client';
-import { useState } from 'react';
-import { useContext } from 'react';
-import { ShopContext } from '../context/ShopContext';
-import { useNavigate } from 'react-router-dom';
+import {  LoginData } from '../services/interface';
 import LoadingBar from '../components/LoadingBar';
+import { userAuth } from '../contexts/AuthContext';
 
 const Login = () => {
   const {
@@ -17,41 +13,10 @@ const Login = () => {
     mode: 'onChange',
   });
 
-  const { setLoginStatus, loading, setLoading, setLoginUser } =
-    useContext(ShopContext);
-  const [serverError, setServerError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const navigate = useNavigate();
-
+  const {login, loading} = userAuth();
   const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-
-  const onSubmit = async (data: LoginData) => {
-    setServerError(null);
-    setSuccessMessage(null);
-    try {
-      setLoading(true);
-      const res: LoggedUserI = await VogueNestService.Login(data);
-      if (res.login) {
-        setLoginStatus(true);
-        setLoginUser(res);
-        setSuccessMessage('Login successful!');
-        setLoading(false);
-        navigate('/');
-      } else {
-        setServerError('Login failed.');
-      }
-    } catch (error: any) {
-      if (error.message === 'Network Error' || error.response?.status === 0) {
-        setServerError('The server is currently down. Please try again later.');
-      } else {
-        setServerError(
-          error?.response?.data?.error || 'Login failed. Please try again.'
-        );
-      }
-  
-      console.log("This is error", error);
-    
-    }
+  const onSubmit = async (data:  LoginData) => {
+    await login(data)
   };
 
   return (
@@ -94,10 +59,10 @@ const Login = () => {
         <Link to="/sign-up">Create account</Link>
       </div>
 
-      {serverError && <p className="text-red-600 mt-2">{serverError}</p>}
+   {/*    {serverError && <p className="text-red-600 mt-2">{serverError}</p>}
       {successMessage && (
         <p className="text-green-600 mt-2">{successMessage}</p>
-      )}
+      )} */}
 
       <button
         type="submit"

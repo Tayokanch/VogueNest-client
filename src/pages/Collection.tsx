@@ -1,6 +1,6 @@
 import React from 'react';
 import { useContext, useEffect, useState } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../contexts/ShopContext';
 import { FaCaretRight } from 'react-icons/fa';
 import Title from '../components/Title';
 import { ProductI } from '../services/interface';
@@ -39,8 +39,10 @@ const Collection = () => {
     //creating a copy of product
     let productsCopy = products?.slice();
 
-    if(showSearch && search){
-      productsCopy = productsCopy.filter(product=> product.name.toLowerCase().includes(search.toLowerCase()))
+    if (showSearch && search) {
+      productsCopy = productsCopy.filter((product) =>
+        product.name.toLowerCase().includes(search.toLowerCase())
+      );
     }
 
     if (category.length > 0) {
@@ -58,7 +60,8 @@ const Collection = () => {
   };
 
   const sortProductbyPrice = () => {
-    let filterProductsCopy = filterProducts.length > 0 ? [...filterProducts] : [];
+    let filterProductsCopy =
+      filterProducts.length > 0 ? [...filterProducts] : [];
 
     switch (sortType) {
       case 'low-high':
@@ -83,13 +86,12 @@ const Collection = () => {
   }, [products]);
 
   useEffect(() => {
-    sortProductbyPrice()
+    sortProductbyPrice();
   }, [sortType]);
 
   useEffect(() => {
     applyFilter();
   }, [category, subCategory, search, showSearch]);
-
 
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
@@ -182,7 +184,10 @@ const Collection = () => {
       <div className="flex-1">
         <div className="flex justify-between text-base sm:text-2xl mb-4">
           <Title text1="ALL" text2="COLLECTIONS" />
-          <select onChange={(e)=> setSortType(e.target.value)} className="border border-gray-300 text-sm px-2">
+          <select
+            onChange={(e) => setSortType(e.target.value)}
+            className="border border-gray-300 text-sm px-2"
+          >
             <option value="relevant">Sort by: Relavent</option>
             <option value="low-high">Sort by: Low to High</option>
             <option value="high-low">Sort by: Hight to Low</option>

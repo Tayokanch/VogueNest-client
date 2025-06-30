@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { ProductItemI } from '../services/interface';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../contexts/ShopContext';
 import { Link } from 'react-router-dom';
 
 const ProductItem = ({ id, image, name, price }: ProductItemI) => {
@@ -15,8 +15,11 @@ const ProductItem = ({ id, image, name, price }: ProductItemI) => {
           alt=""
         />
       </div>
-      <p className='pt-3 pb-1 text-sm'>{name}</p>
-      <p className='text-sm font-medium'>{currency}{price}</p>
+      <p className="pt-3 pb-1 text-sm">{name}</p>
+      <p className="text-sm font-medium">
+        {currency}
+        {price}
+      </p>
     </Link>
   );
 };

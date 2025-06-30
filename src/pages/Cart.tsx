@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../contexts/ShopContext';
 import Title from '../components/Title';
 import { FaTrash } from 'react-icons/fa';
 import CartTotal from '../components/CartTotal';
@@ -66,8 +66,7 @@ const Cart = () => {
   const handleCheckout = () => {
     if (order.length === 0) {
       toast('Your Cart is empty');
-    }
-    else if(loginUSer) {
+    } else if (loginUSer) {
       navigate('/place-order');
     } else {
       toast('Kindly login to checkout');

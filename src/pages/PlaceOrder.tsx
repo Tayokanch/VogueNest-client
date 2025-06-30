@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import Title from '../components/Title';
 import CartTotal from '../components/CartTotal';
 import striplogo from '../assets/stripe.png';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../contexts/ShopContext';
 import { loadStripe } from '@stripe/stripe-js';
 import LoadingBar from '../components/LoadingBar';
 import { toast } from 'react-toastify';

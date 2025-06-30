@@ -40,11 +40,6 @@ export interface OrderedProducts {
   quantity: number;
   productId: string;
 }
-export interface LoggedUserI {
-  login: Boolean;
-  role: String;
-  id: String;
-}
 export interface LoginData extends Omit<FormData, 'name'> {}
 
 interface SizeQuantities {
@@ -75,8 +70,7 @@ export interface ShopContextType {
   delivery_fee: number;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-  loginUSer: LoggedUserI;
-  setLoginUser: React.Dispatch<React.SetStateAction<LoggedUserI>>;
+
   showSearch: boolean;
   setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
   addToCart: (productId: string, size: string) => Promise<void>;
@@ -91,7 +85,7 @@ export interface ShopContextType {
   order: OrderedProducts[];
   setOrder: React.Dispatch<React.SetStateAction<OrderedProducts[]>>;
   loading: Boolean;
-  setLoading: React.Dispatch<React.SetStateAction<Boolean>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   cartProducts: CartProductsI[];
   setCartProducts: React.Dispatch<React.SetStateAction<CartProductsI[]>>;
   postOrderToDB: () => {};
@@ -104,8 +98,6 @@ export const defaultShopContext: ShopContextType = {
   delivery_fee: 10,
   search: '',
   setSearch: () => {},
-  loginUSer: {} as LoggedUserI,
-  setLoginUser: () => {},
   showSearch: false,
   setShowSearch: () => {},
   addToCart: async () => Promise.resolve(),

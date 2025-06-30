@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { FormData, LoggedUserI, LoginData, Order } from './interface';
-
-interface logoutResponseI{
-  message: string
+import { FormData, LoginData, Order } from './interface';
+import { LoggedUserI } from '../contexts/AuthContext';
+interface logoutResponseI {
+  message: string;
 }
 
 class VogueNestService {
@@ -16,13 +16,11 @@ class VogueNestService {
   }
 
   async Login(data: LoginData) {
-      console.log("I am in login")
+    console.log('I am in login');
     const response = await this.http.post<LoggedUserI>('/login', data, {
       withCredentials: true,
     });
-    
-    console.log("this is response:", response)
-  
+
     return response.data;
   }
 
@@ -44,17 +42,16 @@ class VogueNestService {
 
     return order.data;
   }
-  async logOut():Promise<string> {
-   const res = await this.http.post<logoutResponseI>(
+  async logOut(): Promise<string> {
+    const res = await this.http.post<logoutResponseI>(
       '/sign-out',
       {},
       {
         withCredentials: true,
       }
     );
-    return res.data.message
+    return res.data.message;
   }
-
 }
 
 export default new VogueNestService();

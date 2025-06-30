@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
-import {  useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { FormData } from '../services/interface';
-import VogueNestService from '../services/api-client';
 import { useContext, useState } from 'react';
 import LoadingBar from '../components/LoadingBar';
-import { ShopContext } from '../context/ShopContext';
-
+import { ShopContext } from '../contexts/ShopContext';
+import { userAuth } from '../contexts/AuthContext';
 const Signup = () => {
   const {
     register,
@@ -16,28 +15,12 @@ const Signup = () => {
   });
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const { loading, setLoading, navigate } = useContext(ShopContext);
+  const { loading } = useContext(ShopContext);
   const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  const {signUp} = userAuth();
 
   const onSubmit = async (data: FormData) => {
-    setServerError(null);
-    setSuccessMessage(null);
-    try {
-      setLoading(true);
-      await VogueNestService.createUser(data);
-      setSuccessMessage('Sign up successful! ');
-      setLoading(false);
-      navigate('/login');
-    } catch (error: any) {
-      setLoading(false);
-      if (error.message === 'Network Error' || error.response?.status === 0) {
-        setServerError('The server is currently down. Please try again later.');
-      } else {
-        setServerError(
-          error?.response?.data?.error || 'Signup failed. Please try again.'
-        );
-      }
-    }
+    await signUp(data)
   };
 
   return (

@@ -3,7 +3,6 @@ import {
   CartItems,
   CartProductsI,
   defaultShopContext,
-  LoggedUserI,
   OrderedProducts,
   ProductI,
   ShopContextType,
@@ -12,7 +11,7 @@ import productService from '../services/product.service';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import VogueNestService from '../services/api-client';
-
+import { userAuth } from './AuthContext';
 import axios, { AxiosError } from 'axios';
 
 export const ShopContext = createContext<ShopContextType>(defaultShopContext);
@@ -28,15 +27,10 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItems>({});
   const [loginStatus, setLoginStatus] = useState<boolean>(false);
   const [order, setOrder] = useState<OrderedProducts[]>([]);
-  const [loading, setLoading] = useState<Boolean>(false);
-  const [loginUSer, setLoginUser] = useState<LoggedUserI>({
-    login: false,
-    role: '',
-    id: '',
-  });
   const [cartProducts, setCartProducts] = useState<CartProductsI[]>([]);
 
   const navigate = useNavigate();
+  const { user, setUser, loading, setLoading } = userAuth();
 
   const currency: string = '£';
   const delivery_fee: number = 10;
@@ -65,7 +59,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
           return;
         }
         setLoginStatus(response.login);
-        setLoginUser(response);
+        //setLoginUser(response);
       } catch (err) {
         console.error(err);
       }
@@ -168,7 +162,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   }, [cartProducts, products]);
 
   const postOrderToDB = async (): Promise<boolean> => {
-    setLoading(true);
+    //setLoading(true);
     try {
       await axios.post(
         'http://localhost:8050/api/voguenest/send-orders',
@@ -196,14 +190,14 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
 
         console.error('Error posting order to DB:', {
           status: statusCode,
-          message: errorMessage.message, 
+          message: errorMessage.message,
         });
 
         toast(errorMessage.message);
         navigate('/login');
       }
 
-      setLoading(false);
+      //setLoading(false);
       return false;
     }
   };
@@ -232,8 +226,8 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
         setOrder,
         loading,
         setLoading,
-        loginUSer,
-        setLoginUser,
+        setUser,
+        user,
         cartProducts,
         setCartProducts,
         postOrderToDB,

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../contexts/ShopContext';
 import Title from '../components/Title';
 import VogueNestService from '../services/api-client';
 import moment from 'moment';

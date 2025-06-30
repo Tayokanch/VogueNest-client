@@ -7,7 +7,7 @@ import { FaCartPlus } from 'react-icons/fa';
 import { FaBars } from 'react-icons/fa';
 import { useContext, useEffect, useState } from 'react';
 import { FaWindowClose } from 'react-icons/fa';
-import { ShopContext } from '../context/ShopContext.tsx';
+import { ShopContext } from '../contexts/ShopContext.tsx';
 import { useLocation } from 'react-router-dom';
 import VogueNestService from '../services/api-client.ts';
 import { toast } from 'react-toastify';
