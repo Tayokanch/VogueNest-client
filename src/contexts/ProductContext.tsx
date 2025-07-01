@@ -2,25 +2,26 @@ import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import {
   CartItems,
   CartProductsI,
-  defaultShopContext,
+  defaultProductContext,
   OrderedProducts,
   ProductI,
-  ShopContextType,
+  ProductContextType,
 } from '../services/interface';
 import productService from '../services/product.service';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import VogueNestService from '../services/api-client';
 import { userAuth } from './AuthContext';
 import axios, { AxiosError } from 'axios';
 
-export const ShopContext = createContext<ShopContextType>(defaultShopContext);
+export const ProductContext = createContext<ProductContextType>(
+  defaultProductContext
+);
 
 type Props = {
   children: ReactNode;
 };
 
-const ShopContextProvider: React.FC<Props> = ({ children }) => {
+const ProductContextProvider: React.FC<Props> = ({ children }) => {
   const [products, setProducts] = useState<ProductI[]>([]);
   const [search, setSearch] = useState<string>('');
   const [showSearch, setShowSearch] = useState<boolean>(false);
@@ -30,7 +31,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   const [cartProducts, setCartProducts] = useState<CartProductsI[]>([]);
 
   const navigate = useNavigate();
-  const { user, setUser, loading, setLoading } = userAuth();
+  const { loading, setLoading } = userAuth();
 
   const currency: string = '£';
   const delivery_fee: number = 10;
@@ -48,24 +49,6 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     FetchProducts();
-  }, []);
-
-  useEffect(() => {
-    const validateCookie = async () => {
-      try {
-        const response: any = await VogueNestService.validateCookie();
-        if (!response.ok) {
-          navigate('/login');
-          return;
-        }
-        setLoginStatus(response.login);
-        //setLoginUser(response);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    validateCookie();
   }, []);
 
   // Load cart items from localStorage
@@ -203,7 +186,7 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
   };
 
   return (
-    <ShopContext.Provider
+    <ProductContext.Provider
       value={{
         products,
         setProducts,
@@ -226,16 +209,14 @@ const ShopContextProvider: React.FC<Props> = ({ children }) => {
         setOrder,
         loading,
         setLoading,
-        setUser,
-        user,
         cartProducts,
         setCartProducts,
         postOrderToDB,
       }}
     >
       {children}
-    </ShopContext.Provider>
+    </ProductContext.Provider>
   );
 };
 
-export default ShopContextProvider;
+export default ProductContextProvider;

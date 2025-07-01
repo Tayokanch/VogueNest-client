@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
-import { ShopContext } from '../contexts/ShopContext';
+import { ProductContext } from '../contexts/ProductContext';
 import { ProductI } from '../services/interface';
 import Title from './Title';
 import ProductItem from './ProductItem';
 import SkeletonLoader from './SkeletonLoader';
 const BestSeller = () => {
-  const { products } = useContext(ShopContext);
+  const { products } = useContext(ProductContext);
   const [bestSellers, setBestSellers] = useState<ProductI[]>([]);
   const numberOfSkeletons = 6;
   useEffect(() => {

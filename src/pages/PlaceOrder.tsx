@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import Title from '../components/Title';
 import CartTotal from '../components/CartTotal';
 import striplogo from '../assets/stripe.png';
-import { ShopContext } from '../contexts/ShopContext';
+import { ProductContext } from '../contexts/ProductContext';
 import { loadStripe } from '@stripe/stripe-js';
 import LoadingBar from '../components/LoadingBar';
 import { toast } from 'react-toastify';
@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 const PlaceOrder = () => {
   const [method, setMethod] = useState<string>('');
   const { order, navigate, loading, setLoading, postOrderToDB } =
-    useContext(ShopContext);
+    useContext(ProductContext);
 
   const makePayment = async () => {
     localStorage.removeItem('orders');

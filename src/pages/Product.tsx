@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ShopContext } from '../contexts/ShopContext';
+import { ProductContext } from '../contexts/ProductContext';
 import { ProductI } from '../services/interface';
 import star from '../assets/star.png';
 import dullstar from '../assets/dullstar.png';
 import RelatedProducts from '../components/RelatedProducts';
 
 const Product = () => {
-  const { products, currency, addToCart } = useContext(ShopContext);
+  const { products, currency, addToCart } = useContext(ProductContext);
   const { productId } = useParams();
   const [selectSize, setSelectSize] = useState('');
   const [productData, setProductData] = useState<ProductI>();

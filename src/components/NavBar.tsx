@@ -7,21 +7,15 @@ import { FaCartPlus } from 'react-icons/fa';
 import { FaBars } from 'react-icons/fa';
 import { useContext, useEffect, useState } from 'react';
 import { FaWindowClose } from 'react-icons/fa';
-import { ShopContext } from '../contexts/ShopContext.tsx';
+import { ProductContext } from '../contexts/ProductContext.tsx';
+import { userAuth } from '../contexts/AuthContext.tsx';
 import { useLocation } from 'react-router-dom';
-import VogueNestService from '../services/api-client.ts';
-import { toast } from 'react-toastify';
 
 const NavBar = () => {
   const [visible, setVisible] = useState<Boolean>(false);
-  const {
-    setShowSearch,
-    getCartCount,
-    loginStatus,
-    navigate,
-    loginUSer,
-    setLoginStatus,
-  } = useContext(ShopContext);
+  const { setShowSearch, getCartCount, navigate } =
+    useContext(ProductContext);
+  const { user,logout } = userAuth();
   const [searchIcon, setSearchIcon] = useState<Boolean>(false);
   const location = useLocation();
 
@@ -33,14 +27,6 @@ const NavBar = () => {
     }
   }, [location.pathname]);
 
-  const signOut = async () => {
-    const response: any = await VogueNestService.logOut();
-    if (response) {
-      setLoginStatus(false);
-      toast(response);
-      navigate('/');
-    }
-  };
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       {/* Logo */}
@@ -79,7 +65,7 @@ const NavBar = () => {
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-800 hidden" />
         </NavLink>
 
-        {loginUSer && loginUSer?.role === 'vogueadmin' && (
+        {user && user?.role === 'vogueadmin' && (
           <NavLink
             className="border px-5 py-1 rounded-full text-base inline-block text-center font-bold hover:bg-gray-200"
             to={'/admin'}
@@ -102,7 +88,7 @@ const NavBar = () => {
           <FontAwesomeIcon icon={faUser} className="w-5 cursor-pointer" />
           <div className="group-hover:block absolute dropdown-menu right-0 pt-4 hidden">
             <div className="flex flex-col gap-2 w-44 py-3 px-3 bg-slate-100 text-gray-500 rounded">
-              {loginStatus === true ? (
+              {!!user ? (
                 <div>
                   <p className="cursor-pointer hover:text-black text-center border">
                     My Profile
@@ -114,7 +100,7 @@ const NavBar = () => {
                     Orders
                   </p>
                   <p
-                    onClick={signOut}
+                    onClick={logout}
                     className="cursor-pointer hover:text-black text-center border"
                   >
                     Logout
@@ -134,7 +120,7 @@ const NavBar = () => {
 
         {/* Cart Icon */}
 
-        {loginUSer?.role === 'admin' ? null : (
+        {user?.role === 'admin' ? null : (
           <Link to={'/cart'} className="relative">
             <FaCartPlus className="w-5 min-w-5" />
             <p className="absolute right-[-10px] bottom-[-5px] w-4 text-center leading-4 bg-orange-500 text-black aspect-square rounded-full text-[8px] ">

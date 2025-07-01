@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { ShopContext } from '../contexts/ShopContext';
+import { ProductContext } from '../contexts/ProductContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { MdClose } from 'react-icons/md';
@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 
 const SearchBar = () => {
   const { search, setSearch, showSearch, setShowSearch } =
-    useContext(ShopContext);
+    useContext(ProductContext);
   const [visible, setVisible] = useState<Boolean>(false);
   const location = useLocation();
 

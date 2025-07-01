@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
+import { toast } from 'react-toastify';
 import VogueNestService from '../services/api-client';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +16,6 @@ export interface LoggedUserI {
   id: string;
   name: string;
 }
-
 
 interface AuthContextType {
   user: LoggedUserI | null;
@@ -29,6 +29,8 @@ interface AuthContextType {
     password: string;
   }) => Promise<void>;
   logout: () => Promise<void>;
+  errorMessage: string | null;
+  successMessage: string | null
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,30 +38,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<LoggedUserI | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loginStatus, setLoginStatus] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-
-  // Validate session on mount (cookie validation)
-  useEffect(() => {
-    async function validateSession() {
-      try {
-        const response = await VogueNestService.validateCookie();
-        if (response?.login) {
-          setUser(response);
-        } else {
-          setUser(null);
-          navigate('/login');
-        }
-      } catch {
-        setUser(null);
-        navigate('/login');
-      } finally {
-        setLoading(false);
-      }
-    }
-    validateSession();
-  }, [navigate]);
 
   const signUp = useCallback(
     async (data: { name: string; email: string; password: string }) => {
@@ -78,21 +60,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     },
     [navigate]
   );
-
   const login = useCallback(
     async (data: { email: string; password: string }) => {
-      setLoading(true);
       try {
+        setLoading(true);
+        setErrorMessage(null);
         const user = await VogueNestService.Login(data);
-        if (user.login) {
-          setLoading(false);
-          setLoginStatus(true);
-          setUser(user);
-          navigate('/');
+        if (!user?.login) {
+          setErrorMessage('Invalid login credentials.');
+          return;
         }
-      } catch (error) {
+
+        setUser(user);
+        setLoginStatus(true);
+        navigate('/');
+      } catch (error: any) {
         setUser(null);
-        throw error; // propagate error for UI handling
+        setErrorMessage(error?.response?.data?.error || 'Login failed.');
       } finally {
         setLoading(false);
       }
@@ -103,8 +87,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = useCallback(async () => {
     setLoading(true);
     try {
-      await VogueNestService.logOut();
+      const response = await VogueNestService.logOut();
       setUser(null);
+      toast(response);
       navigate('/login');
     } catch (error) {
       console.error('Logout failed:', error);
@@ -115,7 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, setLoading, loading, login, logout, signUp }}
+      value={{ user, setUser, setLoading, loading, login, logout, signUp, successMessage, errorMessage }}
     >
       {children}
     </AuthContext.Provider>

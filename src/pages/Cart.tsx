@@ -1,10 +1,11 @@
 import { useContext, useEffect } from 'react';
-import { ShopContext } from '../contexts/ShopContext';
+import { ProductContext } from '../contexts/ProductContext';
 import Title from '../components/Title';
 import { FaTrash } from 'react-icons/fa';
 import CartTotal from '../components/CartTotal';
 import { CartProductsI, OrderedProducts } from '../services/interface';
 import { toast } from 'react-toastify';
+import { userAuth } from '../contexts/AuthContext';
 
 const Cart = () => {
   const {
@@ -16,10 +17,11 @@ const Cart = () => {
     navigate,
     order,
     setOrder,
-    loginUSer,
     cartProducts,
     setCartProducts,
-  } = useContext(ShopContext);
+  } = useContext(ProductContext);
+
+  const { user } = userAuth();
 
   useEffect(() => {
     const tempProducts: CartProductsI[] = [];
@@ -66,7 +68,7 @@ const Cart = () => {
   const handleCheckout = () => {
     if (order.length === 0) {
       toast('Your Cart is empty');
-    } else if (loginUSer) {
+    } else if (user) {
       navigate('/place-order');
     } else {
       toast('Kindly login to checkout');

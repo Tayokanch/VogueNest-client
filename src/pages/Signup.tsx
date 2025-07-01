@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { FormData } from '../services/interface';
 import { useContext, useState } from 'react';
 import LoadingBar from '../components/LoadingBar';
-import { ShopContext } from '../contexts/ShopContext';
+import { ProductContext } from '../contexts/ProductContext';
 import { userAuth } from '../contexts/AuthContext';
 const Signup = () => {
   const {
@@ -15,12 +15,12 @@ const Signup = () => {
   });
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const { loading } = useContext(ShopContext);
+  const { loading } = useContext(ProductContext);
   const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-  const {signUp} = userAuth();
+  const { signUp } = userAuth();
 
   const onSubmit = async (data: FormData) => {
-    await signUp(data)
+    await signUp(data);
   };
 
   return (

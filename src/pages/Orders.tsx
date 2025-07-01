@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
-import { ShopContext } from '../contexts/ShopContext';
+import { ProductContext } from '../contexts/ProductContext';
 import Title from '../components/Title';
 import VogueNestService from '../services/api-client';
 import moment from 'moment';
 import { Order } from '../services/interface';
 
 const Orders = () => {
-  const { products, currency } = useContext(ShopContext);
+  const { products, currency } = useContext(ProductContext);
   const [myOrder, setMyOrder] = useState<Order[]>([]);
 
   const getMyOrder = async () => {

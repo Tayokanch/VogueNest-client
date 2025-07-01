@@ -13,7 +13,8 @@ const Login = () => {
     mode: 'onChange',
   });
 
-  const {login, loading} = userAuth();
+  const {login, loading, errorMessage, successMessage} = userAuth();
+  
   const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
   const onSubmit = async (data:  LoginData) => {
     await login(data)
@@ -58,12 +59,7 @@ const Login = () => {
         <p className="cursor-pointer">Forgot your password?</p>
         <Link to="/sign-up">Create account</Link>
       </div>
-
-   {/*    {serverError && <p className="text-red-600 mt-2">{serverError}</p>}
-      {successMessage && (
-        <p className="text-green-600 mt-2">{successMessage}</p>
-      )} */}
-
+      {errorMessage && <p className="text-red-600 mt-2">{errorMessage}</p>}
       <button
         type="submit"
         className="bg-black text-white font-light px-8 py-2 mt-4"

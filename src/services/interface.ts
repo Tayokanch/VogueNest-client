@@ -63,14 +63,13 @@ export interface ProductOrder {
 
 export type CartItems = Record<string, SizeQuantities>;
 
-export interface ShopContextType {
+export interface ProductContextType {
   products: ProductI[];
   setProducts: React.Dispatch<React.SetStateAction<ProductI[]>>;
   currency: string;
   delivery_fee: number;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-
   showSearch: boolean;
   setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
   addToCart: (productId: string, size: string) => Promise<void>;
@@ -91,7 +90,7 @@ export interface ShopContextType {
   postOrderToDB: () => {};
 }
 
-export const defaultShopContext: ShopContextType = {
+export const defaultProductContext: ProductContextType = {
   products: [],
   setProducts: () => {},
   currency: '£',
@@ -106,7 +105,7 @@ export const defaultShopContext: ShopContextType = {
   updateQuantity: () => {},
   deleteItem: () => {},
   getCartAmount: () => 0,
-  navigate: {} as NavigateFunction, // Placeholder for navigation
+  navigate: {} as NavigateFunction,
   loginStatus: false,
   setLoginStatus: () => {},
   order: [],

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useContext, useEffect, useState } from 'react';
-import { ShopContext } from '../contexts/ShopContext';
+import { ProductContext } from '../contexts/ProductContext';
 import { FaCaretRight } from 'react-icons/fa';
 import Title from '../components/Title';
 import { ProductI } from '../services/interface';
 import ProductItem from '../components/ProductItem';
 const Collection = () => {
-  const { products, search, showSearch } = useContext(ShopContext);
+  const { products, search, showSearch } = useContext(ProductContext);
   const [showFilter, setShowFilter] = useState<Boolean>(false);
   const [filterProducts, setFilterProducts] = useState<ProductI[]>([]);
   const [category, setCategory] = useState<String[]>([]);
