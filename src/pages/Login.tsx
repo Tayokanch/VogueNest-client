@@ -1,10 +1,16 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import {  LoginData } from '../services/interface';
+import { LoginData } from '../services/interface';
 import LoadingBar from '../components/LoadingBar';
 import { userAuth } from '../contexts/AuthContext';
+import { useEffect } from 'react';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const redirectPath = searchParams.get('redirect') || '/';
+  
   const {
     register,
     handleSubmit,
@@ -13,11 +19,26 @@ const Login = () => {
     mode: 'onChange',
   });
 
-  const {login, loading, errorMessage, successMessage} = userAuth();
-  
+  const { login, loading, errorMessage, successMessage, setErrorMessage, setSuccessMessage } = userAuth();
+
+  // Clear messages when component unmounts
+  useEffect(() => {
+    return () => {
+      setErrorMessage(null);
+      setSuccessMessage(null);
+    };
+  }, [setErrorMessage, setSuccessMessage]);
+
+  // Redirect after successful login
+  useEffect(() => {
+    if (successMessage && successMessage.includes('successful')) {
+      navigate(redirectPath);
+    }
+  }, [successMessage, navigate, redirectPath]);
+
   const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-  const onSubmit = async (data:  LoginData) => {
-    await login(data)
+  const onSubmit = async (data: LoginData) => {
+    await login(data);
   };
 
   return (
@@ -59,11 +80,17 @@ const Login = () => {
         <p className="cursor-pointer">Forgot your password?</p>
         <Link to="/sign-up">Create account</Link>
       </div>
-      {errorMessage && <p className="text-red-600 mt-2">{errorMessage}</p>}
+      
+      {/* Display error messages */}
+      {errorMessage && <p className="text-red-600 mt-2 text-center">{errorMessage}</p>}
+      
+      {/* Display success messages */}
+      {successMessage && <p className="text-green-600 mt-2 text-center">{successMessage}</p>}
+      
       <button
         type="submit"
         className="bg-black text-white font-light px-8 py-2 mt-4"
-        disabled={isSubmitting}
+        disabled={isSubmitting || loading}
       >
         {loading ? <LoadingBar /> : 'Login'}
       </button>

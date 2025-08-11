@@ -17,7 +17,7 @@ const Signup = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const { loading } = useContext(ProductContext);
   const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-  const { signUp } = userAuth();
+  const { signUp, token } = userAuth();
 
   const onSubmit = async (data: FormData) => {
     await signUp(data);

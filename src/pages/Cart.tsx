@@ -21,7 +21,7 @@ const Cart = () => {
     setCartProducts,
   } = useContext(ProductContext);
 
-  const { user } = userAuth();
+  const { token } = userAuth();
 
   useEffect(() => {
     const tempProducts: CartProductsI[] = [];
@@ -68,11 +68,12 @@ const Cart = () => {
   const handleCheckout = () => {
     if (order.length === 0) {
       toast('Your Cart is empty');
-    } else if (user) {
+    } else if (token) {
       navigate('/place-order');
     } else {
       toast('Kindly login to checkout');
-      navigate('/login');
+      
+      navigate('/login?redirect=/cart');
     }
   };
 
@@ -138,7 +139,12 @@ const Cart = () => {
           <div className="w-full text-end">
             <button
               onClick={handleCheckout}
-              className="bg-black text-white text-sm my-8 px-8 py-3"
+              disabled={order.length === 0}
+              className={`text-sm my-8 px-8 py-3 ${
+                order.length === 0
+                  ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                  : 'bg-black text-white hover:bg-gray-800'
+              }`}
             >
               PROCEED TO CHECKOUT
             </button>

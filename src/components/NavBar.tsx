@@ -15,7 +15,7 @@ const NavBar = () => {
   const [visible, setVisible] = useState<Boolean>(false);
   const { setShowSearch, getCartCount, navigate } =
     useContext(ProductContext);
-  const { user,logout } = userAuth();
+  const { user,logout,token } = userAuth();
   const [searchIcon, setSearchIcon] = useState<Boolean>(false);
   const location = useLocation();
 
@@ -88,7 +88,7 @@ const NavBar = () => {
           <FontAwesomeIcon icon={faUser} className="w-5 cursor-pointer" />
           <div className="group-hover:block absolute dropdown-menu right-0 pt-4 hidden">
             <div className="flex flex-col gap-2 w-44 py-3 px-3 bg-slate-100 text-gray-500 rounded">
-              {!!user ? (
+              {!!token ? (
                 <div>
                   <p className="cursor-pointer hover:text-black text-center border">
                     My Profile

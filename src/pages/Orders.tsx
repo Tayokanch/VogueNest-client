@@ -4,14 +4,16 @@ import Title from '../components/Title';
 import VogueNestService from '../services/api-client';
 import moment from 'moment';
 import { Order } from '../services/interface';
+import { userAuth } from '../contexts/AuthContext';
 
 const Orders = () => {
   const { products, currency } = useContext(ProductContext);
+  const { token } = userAuth();
   const [myOrder, setMyOrder] = useState<Order[]>([]);
 
   const getMyOrder = async () => {
     try {
-      const order: Order[] = await VogueNestService.getUserOrder();
+      const order: Order[] = await VogueNestService.getUserOrder(token);
       setMyOrder(order);
       if (order) {
         console.log(order);
@@ -23,7 +25,7 @@ const Orders = () => {
 
   useEffect(() => {
     getMyOrder();
-  }, []);
+  }, [token]);
 
   return (
     <div className="border-t pt-16">

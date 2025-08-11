@@ -4,6 +4,7 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import ShopContextProvider from './contexts/ProductContext.tsx';
 import { AuthProvider } from './contexts/AuthContext.tsx';
+
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <AuthProvider>

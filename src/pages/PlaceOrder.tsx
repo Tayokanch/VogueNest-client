@@ -6,11 +6,13 @@ import { ProductContext } from '../contexts/ProductContext';
 import { loadStripe } from '@stripe/stripe-js';
 import LoadingBar from '../components/LoadingBar';
 import { toast } from 'react-toastify';
+import { userAuth } from '../contexts/AuthContext';
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState<string>('');
   const { order, navigate, loading, setLoading, postOrderToDB } =
     useContext(ProductContext);
+  const { token } = userAuth();
 
   const makePayment = async () => {
     localStorage.removeItem('orders');
