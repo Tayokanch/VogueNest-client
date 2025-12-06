@@ -4,11 +4,6 @@ pipeline {
         nodejs 'NJ20.19.0'
     }
     stages {
-        stage('Clone') {
-            steps {
-                git branch: 'main', url: 'https://github.com/Tayokanch/VogueNest-Server.git'
-            }
-        }
 
         stage('Install Dependencies') {
             steps {
