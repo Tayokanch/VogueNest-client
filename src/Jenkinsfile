@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    tools{
+        nodejs 'NJ20.19.0'
+    }
     stages {
         stage('Clone') {
             steps {
