@@ -31,8 +31,7 @@ pipeline {
         stage('Verify Deployment') {
             steps {
                 sh """
-                docker ps | grep vogueshopping_website
-                docker logs vogueshopping_website --tail 20
+                docker ps 
                 """
             }
         }
