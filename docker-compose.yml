@@ -9,5 +9,4 @@ services:
 
 networks:
   vogueshopping_network:
-    driver:
-     - bridge
+    driver: bridge
