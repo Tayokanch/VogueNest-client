@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         REACT_APP_NAME = "vogueshopping"
-        COMPOSE_DIR = "/opt/nginx"   # the directory with docker-compose.yml
+        COMPOSE_DIR = "/opt/nginx" 
         HOST_PORT = "5050"         
     }
 
