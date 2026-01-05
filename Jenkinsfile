@@ -17,7 +17,6 @@ pipeline {
         stage('Build React Docker Image') {
             steps {
                 sh """
-                cd frontend
                 docker build -t ${REACT_APP_NAME}:latest .
                 """
             }
