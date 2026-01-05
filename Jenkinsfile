@@ -4,7 +4,7 @@ pipeline {
     environment {
         REACT_APP_NAME = "vogueshopping"
         COMPOSE_DIR = "/opt/nginx" 
-        HOST_PORT = "5050"         
+        HOST_PORT = "5051"         
     }
 
     stages {
