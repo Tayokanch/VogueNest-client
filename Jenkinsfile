@@ -24,9 +24,7 @@ pipeline {
 
         stage('Deploy React Frontend') {
             steps {
-                sh """
-                docker compose up -d
-                """
+               sh 'docker compose up -d'
             }
         }
 
