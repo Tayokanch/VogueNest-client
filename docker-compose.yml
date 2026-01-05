@@ -1,0 +1,13 @@
+
+services:
+  vogueshopping_website:
+    image: vogueshopping:latest
+    container_name: vogueshopping
+    networks:
+      - vogueshopping_network
+    restart: always
+
+networks:
+  vogueshopping_network:
+    driver:
+     - bridge

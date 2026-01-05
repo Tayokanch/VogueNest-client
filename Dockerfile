@@ -1,16 +1,16 @@
-FROM node:alpine3.20
-
+# -------- Build stage --------
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-USER root
-
-COPY package*.json .
-
-RUN npm install
+COPY package*.json ./
+RUN npm ci
 
 COPY . .
+RUN npm run build
 
-EXPOSE 5173
+# -------- Runtime stage --------
+FROM nginx:alpine
+COPY --from=builder /app/build /usr/share/nginx/html
 
-CMD [ "npm", "run", "dev"]
-
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

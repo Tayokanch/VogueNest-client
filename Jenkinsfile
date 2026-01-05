@@ -1,41 +1,53 @@
 pipeline {
     agent any
-    tools{
-        nodejs 'NJ20.19.0'
+
+    environment {
+        REACT_APP_NAME = "vogueshopping"
+        COMPOSE_DIR = "/opt/nginx"   # the directory with docker-compose.yml
+        HOST_PORT = "5050"         
     }
+
     stages {
-
-        stage('Install Dependencies') {
+        stage('Checkout') {
             steps {
-                sh 'npm install'
+                checkout scm
             }
         }
 
-        stage('Run Tests') {
+        stage('Build React Docker Image') {
             steps {
-                sh 'npm test || true'   
+                sh """
+                cd frontend
+                docker build -t ${REACT_APP_NAME}:latest .
+                """
             }
         }
 
-        stage('Build') {
+        stage('Deploy React Frontend') {
             steps {
-                sh 'npm run build '
+                sh """
+                cd ${COMPOSE_DIR}
+                docker compose up -d vogueshopping_website
+                """
             }
         }
 
-stage('Health Check') {
-    steps {
-        sh 'curl -I http://localhost:3100/api/users > users.txt'
-        sh '''
-            if ! grep -q "HTTP/1.1 200" users.txt; then
-                echo "API health check failed"
-                exit 1
-            fi
-        '''
-        archiveArtifacts artifacts: 'users.txt', fingerprint: true
+        stage('Verify Deployment') {
+            steps {
+                sh """
+                docker ps | grep vogueshopping_website
+                docker logs vogueshopping_website --tail 20
+                """
+            }
+        }
     }
-}
 
-
+    post {
+        always {
+            echo "Vogueshopping pipeline completed"
+        }
+        failure {
+            echo "Pipeline failed. Check logs."
+        }
     }
 }
