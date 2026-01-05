@@ -25,8 +25,7 @@ pipeline {
         stage('Deploy React Frontend') {
             steps {
                 sh """
-                cd ${COMPOSE_DIR}
-                docker compose up -d vogueshopping_website
+                docker compose up -d
                 """
             }
         }
