@@ -15,17 +15,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh """
-                  docker build -t ${IMAGE_NAME}:latest .
-                """
+                sh 'docker compose build --no-cache'
             }
         }
 
-        stage('Deploy') {
+        stage('Start Service') {
             steps {
-                sh """
-                  docker compose up -d
-                """
+                sh 'docker compose up -d --force-recreate'
             }
         }
 

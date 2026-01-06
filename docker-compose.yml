@@ -1,8 +1,9 @@
 
 services:
   vogueshopping_website:
-    image: vogueshopping:latest
+    build: .
     container_name: vogueshopping
+    image: vogueshopping:latest
     networks:
       - vogueshopping_network
     restart: always
