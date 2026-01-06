@@ -3,13 +3,10 @@ services:
   vogueshopping_website:
     image: vogueshopping:latest
     container_name: vogueshopping
-    ports:
-      - "5051:80"
-
     networks:
       - vogueshopping_network
     restart: always
 
 networks:
   vogueshopping_network:
-    driver: bridge
+    external: true

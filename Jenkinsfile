@@ -2,36 +2,37 @@ pipeline {
     agent any
 
     environment {
-        REACT_APP_NAME = "vogueshopping"
-        COMPOSE_DIR = "/opt/nginx" 
-        HOST_PORT = "5051"         
+        IMAGE_NAME = "vogueshopping"
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Build React Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 sh """
-                docker build -t ${REACT_APP_NAME}:latest .
+                  docker build -t ${IMAGE_NAME}:latest .
                 """
             }
         }
 
-        stage('Deploy React Frontend') {
+        stage('Deploy') {
             steps {
-               sh 'docker compose up -d'
+                sh """
+                  docker compose up -d
+                """
             }
         }
 
-        stage('Verify Deployment') {
+        stage('Verify') {
             steps {
                 sh """
-                docker ps 
+                  docker ps | grep ${IMAGE_NAME} || true
                 """
             }
         }
