@@ -4,6 +4,8 @@ services:
     build: .
     container_name: vogueshopping
     image: vogueshopping:latest
+    volumes:
+      - ./nginx/vogueshopping.conf:/etc/nginx/conf.d/vogueshopping.conf
     networks:
       - vogueshopping_network
     restart: always
